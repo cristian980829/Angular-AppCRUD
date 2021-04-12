@@ -2,29 +2,32 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 //Angular material 
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatSortModule } from '@angular/material/sort';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatIconModule} from '@angular/material/icon';
 
+
+const myModule = [
+  CommonModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatInputModule,
+    MatSortModule,
+    MatToolbarModule,
+    MatIconModule
+];
 
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule,
-    MatTableModule,
-    MatPaginatorModule,
-    BrowserAnimationsModule,
-    MatInputModule,
-    MatSortModule
+    CommonModule, 
+    myModule
   ],
   exports: [
-    MatTableModule,
-    MatPaginatorModule,
-    BrowserAnimationsModule,
-    MatInputModule,
-    MatSortModule
+    myModule
   ]
 })
 export class MaterialModule { }

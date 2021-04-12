@@ -14,10 +14,27 @@ import { MaterialModule } from './material.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ContainerAppComponent } from './components/pages/container-app/container-app.component';
+import { EditHeroComponent } from './components/heroes/edit-hero/edit-hero.component';
+import { HeroListComponent } from './components/heroes/hero-list/hero-list.component';
+import { NewHeroComponent } from './components/heroes/new-hero/new-hero.component';
+import { HeroComponent } from './components/heroes/hero/hero.component';
+import { TableComponent } from './shared/components/table/table.component';
+import { ModalComponent } from './shared/components/modal/modal.component';
+import { ToolbarComponent } from './shared/components/toolbar/toolbar.component';
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ContainerAppComponent,
+    EditHeroComponent,
+    HeroListComponent,
+    NewHeroComponent,
+    HeroComponent,
+    TableComponent,
+    ModalComponent,
+    ToolbarComponent
   ],
   imports: [
     BrowserModule,
