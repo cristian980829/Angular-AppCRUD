@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "appcrudv2": {
+      "hosting": {
+        "appCRUD": [
+          "appcrudv2"
+        ]
+      }
+    }
+  }
+}
