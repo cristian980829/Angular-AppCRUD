@@ -20,6 +20,11 @@ const routes: Routes = [
           )
       },
       {
+        path: 'heroList',
+        loadChildren: () =>
+          import('./components/heroes/hero-list/hero-list.module').then(m => m.HeroListModule)
+      },
+      {
         path: '',
         redirectTo: 'home',
         pathMatch: 'full'

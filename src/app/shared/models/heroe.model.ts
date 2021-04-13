@@ -1,4 +1,4 @@
-export interface heroeModel {
+export interface HeroeModel {
   name:string;
   status:string;
   universe:string;
