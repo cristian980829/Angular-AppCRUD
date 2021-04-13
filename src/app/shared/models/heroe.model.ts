@@ -1,7 +1,7 @@
 export interface HeroeModel {
-  name:string;
-  status:string;
-  universe:string;
+  nombre:string;
+  estado:string;
+  universo:string;
   id?: string;
-  powers:string[];
+  poderes:string[];
 }

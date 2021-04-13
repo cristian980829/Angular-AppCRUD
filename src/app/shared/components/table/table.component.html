@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col text-right">
-    <button [routerLink]="['/heroe/nuevo']" class="btn btn-outline-primary">
+    <button (click)="onNewPost()" class="btn btn-outline-primary">
       <i class="fa fa-plus"></i> Agregar
     </button>
   </div>
@@ -20,17 +20,17 @@
 
     <ng-container matColumnDef="Nombre">
       <th mat-header-cell *matHeaderCellDef> Nombre </th>
-      <td mat-cell *matCellDef="let heroe"> {{heroe.name}} </td>
+      <td mat-cell *matCellDef="let heroe"> {{heroe.nombre}} </td>
     </ng-container>
 
     <ng-container matColumnDef="Estado">
       <th mat-header-cell *matHeaderCellDef> Estado </th>
       <td mat-cell *matCellDef="let heroe">
 
-        <label *ngIf="heroe.status==='Vivo'" class="badge badge-success">
+        <label *ngIf="heroe.estado==='vivo'" class="badge badge-success">
           Vivo
         </label>
-        <label *ngIf="heroe.status==='Muerto'" class="badge badge-danger">
+        <label *ngIf="heroe.estado==='muerto'" class="badge badge-danger">
           Muerto
         </label>
 
@@ -39,12 +39,7 @@
 
     <ng-container matColumnDef="Universo">
       <th mat-header-cell *matHeaderCellDef> Universo </th>
-      <td mat-cell *matCellDef="let heroe"> {{heroe.universe}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="Poder">
-      <th mat-header-cell *matHeaderCellDef> Poder </th>
-      <td mat-cell *matCellDef="let heroe"> {{heroe.powers[0]}} </td>
+      <td mat-cell *matCellDef="let heroe"> {{heroe.universo}} </td>
     </ng-container>
 
     <!-- <ng-container matColumnDef="Universo">
@@ -87,6 +82,8 @@
   <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons>
   </mat-paginator>
 </div>
+
+
 
 <!-- <div *ngIf="!cargando && dataSource.data.length===0" class="alert alert-warning text-center mt-3 animated fadeIn">
   <h4 class="alert-heading">No hay registros</h4>

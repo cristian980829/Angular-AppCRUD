@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { ReactiveFormsModule } from '@angular/forms';
 // import { HttpClientModule } from '@angular/common/http';
 
 //firestore modules
@@ -21,7 +22,6 @@ import { HeroComponent } from './components/heroes/hero/hero.component';
 import { ModalComponent } from './shared/components/modal/modal.component';
 import { ToolbarComponent } from './shared/components/toolbar/toolbar.component';
 
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 
 @NgModule({
@@ -44,7 +44,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MaterialModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     BrowserAnimationsModule,
-    FlexLayoutModule
+    ReactiveFormsModule
   ],
   providers: [ {provide: BUCKET, useValue:'gs://appcrudv2.appspot.com' }],
   bootstrap: [AppComponent]

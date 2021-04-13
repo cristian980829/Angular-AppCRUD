@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { HeroesService } from '../services/heroes.service';
+import { HeroeModel } from '../../../shared/models/heroe.model';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-new-hero',
@@ -7,9 +11,30 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NewHeroComponent implements OnInit {
 
-  constructor() { }
+  constructor( private heroService: HeroesService,
+                      public dialogRef: MatDialogRef<NewHeroComponent>) { }
+
+  public newHeroForm = new FormGroup({
+    nombre: new FormControl('', Validators.required),
+    estado: new FormControl('', Validators.required),
+    universo: new FormControl('', Validators.required),
+  });
 
   ngOnInit(): void {
   }
+
+  addNewHero(data: HeroeModel) {
+    // console.log('New post', data);
+    this.heroService.saveHero(data);
+  }
+
+  cancel() {
+    this.dialogRef.close();
+  }
+
+
+  // handleImage(event: any): void {
+  //   this.image = event.target.files[0];
+  // }
 
 }

@@ -5,6 +5,10 @@ import { HeroeModel } from '../../models/heroe.model';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
+import { HeroesService } from '../../../components/heroes/services/heroes.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalComponent } from '../modal/modal.component';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-table',
@@ -18,37 +22,18 @@ export class TableComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   cargando=false;
-  columnas: string[] = ['Numero','Nombre', 'Estado', 'Universo', 'Poder', 'Tools'];
-  heroes:HeroeModel[]=[
-    {
-      name:'Iron man',
-      status:'Muerto',
-      universe:'Marvel',
-      powers:['Volar','Dinero']
-    },{
-      name:'Super man',
-      status:'Vivo',
-      universe:'DC',
-      powers:['Volar','Fuerza']
-    },{
-      name:'Hulk',
-      status:'Vivo',
-      universe:'Marvel',
-      powers:['Fuerza','Inteligencia']
-    },
-  ];
-
+  columnas: string[] = ['Numero','Nombre', 'Estado', 'Universo', 'Tools'];
     
-  constructor() { }
+  constructor( private heroService: HeroesService,
+                      public dialog: MatDialog ) { }
 
   ngOnInit(): void {
     // this.cargando=true
-    // this.heroesService.getAllHeroes().subscribe(resp=>{
-    //   this.cargando=false;
-    //   this.dataSource.data = resp;
-    //   console.log(this.dataSource.data);
-    // });
-    this.dataSource.data = this.heroes;
+    this.heroService.getAllHeroes().subscribe(resp=>{
+      // this.cargando=false;
+      this.dataSource.data = resp;
+      console.log(this.dataSource.data);
+    });
   }
 
     ngAfterViewInit() {
@@ -62,6 +47,29 @@ export class TableComponent implements OnInit {
 
   onDeleteHeroe(heroe,i){
 
+  }
+
+  onNewPost() {
+    this.openDialog();
+  }
+
+  openDialog(post?: HeroeModel): void {
+    const config = {
+      data: {
+        message: post ? 'Editar heroe' : 'Nuevo heroe',
+        content: post
+      }
+    };
+
+    const dialogRef = this.dialog.open(ModalComponent, config);
+    dialogRef.afterClosed().subscribe(result => {
+      if(!result || result===true){
+        return;
+      }
+      console.log(`Dialog result ${result}`);
+    }, (err)=>{
+        console.log(`El error es: ${catchError}`);
+    });
   }
 
 }
