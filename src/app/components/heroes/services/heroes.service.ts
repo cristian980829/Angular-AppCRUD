@@ -46,7 +46,7 @@ private heroesCollection: AngularFirestoreCollection<HeroeModel>;
   saveHero( heroe:HeroeModel ){
      const heroetObj = {
       nombre: heroe.nombre,
-      poderes: ['volar','comer'],
+      poderes: heroe.poderes,
       estado: heroe.estado,
       universo: heroe.universo
     };
@@ -56,8 +56,7 @@ private heroesCollection: AngularFirestoreCollection<HeroeModel>;
   //Se crea un objeto temporal sin el id para que al guardarlo en firebase no se cree el atributo id, y se mantiene el objeto original para obtener el id del que se actualizará
   editHero( heroe:HeroeModel ){
     const HEROETEMP = {
-      ...heroe,
-      poderes: ['Saltar','Kaioken']
+      ...heroe
     }
 
     delete HEROETEMP.id;

@@ -12,7 +12,7 @@
 
         <mat-radio-group formControlName="universo" aria-label="Seleccione un universo">
           <div class="form-group row mt-3" style="padding: 1rem;">
-            <label>Universo:</label>
+            <strong>Universo:</strong>
             <div class="form-row col">
               <div class="col">
                 <mat-radio-button value="Marvel">Marvel</mat-radio-button>
@@ -26,7 +26,7 @@
 
         <mat-radio-group formControlName="estado" aria-label="Seleccione un estado">
           <div class="form-group row" style="padding: 1rem;">
-            <label>Estado: </label>
+            <strong>Estado:</strong>
             <div class="form-row col">
               <div class="col">
                 <mat-radio-button value="vivo">Vivo(a)</mat-radio-button>
@@ -37,6 +37,33 @@
             </div>
           </div>
         </mat-radio-group>
+
+
+        <div class="row">
+          <div class="col">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Poder</th>
+                  <!-- <th>Borrar</th> -->
+                </tr>
+              </thead>
+              <tbody formArrayName="poderes">
+                <tr *ngFor="let control of poderes.controls; let i = index">
+                  <td>
+                    <input class="form-control" type="text" [formControlName]="i">
+                  </td>
+                  <td>
+                    <button (click)="borrarPoderes(i)" mat-stroked-button color="warn" class="btn-block">Quitar</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <button type="button" (click)="agregarPoderes()" mat-stroked-button color="primary"
+              class="mb-5 btn-block">Añadir</button>
+          </div>
+        </div>
+
 
         <div mat-dialog-actions>
           <button mat-raised-button color="warn" [mat-dialog-close]="true">Cancelar</button>
