@@ -45,8 +45,25 @@ export class TableComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  onDeleteHeroe(heroe,i){
-
+  onDeleteHeroe(heroe: HeroeModel) {
+    Swal.fire({
+      title: '¿Seguro desea eliminar este registro?',
+      text: `!No podrá revertir los cambios!`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '!Sí, eliminalo!',
+      cancelButtonText: 'Cancelar'
+    }).then(result => {
+      if (result.value) {
+        this.heroService.deleteHeroById(heroe).then(() => {
+          Swal.fire('!Eliminado!', 'El registro ha sido eliminado con exito.', 'success');
+        }).catch((error) => {
+          Swal.fire('Error!', 'Hubo un error al eliminar el registro', 'error');
+        });
+      }
+    });
   }
 
   onNewPost() {

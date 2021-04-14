@@ -32,11 +32,11 @@ private heroesCollection: AngularFirestoreCollection<HeroeModel>;
       );
   }
 
-  public deleteHeroeById(heroe: HeroeModel) {
+  public deleteHeroById(heroe: HeroeModel) {
     return this.heroesCollection.doc(heroe.id).delete();
   }
 
-  getHeroe(id:string): Observable<HeroeModel>{
+  getHero(id:string): Observable<HeroeModel>{
     return this.afs.doc<HeroeModel>(`heroes/${id}`).valueChanges();
     
   }

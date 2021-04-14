@@ -59,7 +59,7 @@
 
     <ng-container matColumnDef="Tools">
       <th class="text-center" mat-header-cell *matHeaderCellDef> Tools </th>
-      <td class="text-center" mat-cell *matCellDef=" let heroe, let i=index">
+      <td class="text-center" mat-cell *matCellDef=" let heroe">
 
         <button class="btn btn-success mr-1" [routerLink]="['/heroe', heroe.id]">
           <i class="fa fa-search"></i>
@@ -69,7 +69,7 @@
           <i class="fa fa-pen"></i>
         </button>
 
-        <button (click)="onDeleteHeroe(heroe,i)" class="btn btn-danger mr-1">
+        <button (click)="onDeleteHeroe(heroe)" class="btn btn-danger mr-1">
           <i class="fa fa-trash"></i>
         </button>
 
