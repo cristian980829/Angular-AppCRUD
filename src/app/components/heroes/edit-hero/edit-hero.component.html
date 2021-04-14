@@ -1,1 +1,49 @@
-<p>edit-hero works!</p>
+<div class="container">
+  <form [formGroup]="editHeroForm" (ngSubmit)="editHero(editHeroForm.value)">
+
+    <div mat-dialog-content>
+      <div style="display: flex;flex-direction: column; margin:1rem auto; width: 500px; height: 300px; padding: 1rem;">
+
+        <mat-form-field>
+          <mat-label>Nombre</mat-label>
+          <input matInput placeholder="Nombre" formControlName="nombre">
+        </mat-form-field>
+
+        <mat-radio-group formControlName="universo" aria-label="Seleccione un universo">
+          <div class="form-group row mt-3" style="padding: 1rem;">
+            <label>Universo:</label>
+            <div class="form-row col">
+              <div class="col">
+                <mat-radio-button value="Marvel">Marvel</mat-radio-button>
+              </div>
+              <div class="col">
+                <mat-radio-button value="DC">DC</mat-radio-button>
+              </div>
+            </div>
+          </div>
+        </mat-radio-group>
+
+        <mat-radio-group formControlName="estado" aria-label="Seleccione un estado">
+          <div class="form-group row" style="padding: 1rem;">
+            <label>Estado: </label>
+            <div class="form-row col">
+              <div class="col">
+                <mat-radio-button value="vivo">Vivo(a)</mat-radio-button>
+              </div>
+              <div class="col">
+                <mat-radio-button value="muerto">Muerto(a)</mat-radio-button>
+              </div>
+            </div>
+          </div>
+        </mat-radio-group>
+
+        <div mat-dialog-actions>
+          <button mat-raised-button color="warn" [mat-dialog-close]="true">Cancelar</button>
+          <button type="submit" mat-raised-button color="primary" [mat-dialog-close]="true">Guardar</button>
+        </div>
+
+      </div>
+    </div>
+
+  </form>
+</div>

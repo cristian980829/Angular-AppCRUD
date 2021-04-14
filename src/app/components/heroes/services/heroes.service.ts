@@ -18,7 +18,7 @@ private heroesCollection: AngularFirestoreCollection<HeroeModel>;
                           this.heroesCollection = afs.collection<HeroeModel>('heroes');    
     }
 
-    public getAllHeroes(): Observable<HeroeModel[]> {
+    getAllHeroes(): Observable<HeroeModel[]> {
     return this.heroesCollection
       .snapshotChanges()
       .pipe(
@@ -32,7 +32,7 @@ private heroesCollection: AngularFirestoreCollection<HeroeModel>;
       );
   }
 
-  public deleteHeroById(heroe: HeroeModel) {
+  deleteHeroById(heroe: HeroeModel) {
     return this.heroesCollection.doc(heroe.id).delete();
   }
 
@@ -54,9 +54,10 @@ private heroesCollection: AngularFirestoreCollection<HeroeModel>;
   }
 
   //Se crea un objeto temporal sin el id para que al guardarlo en firebase no se cree el atributo id, y se mantiene el objeto original para obtener el id del que se actualizará
-  actualizarHeroe( heroe:HeroeModel ){
+  editHero( heroe:HeroeModel ){
     const HEROETEMP = {
-      ...heroe
+      ...heroe,
+      poderes: ['Saltar','Kaioken']
     }
 
     delete HEROETEMP.id;

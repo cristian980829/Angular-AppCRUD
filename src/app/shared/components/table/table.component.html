@@ -65,7 +65,7 @@
           <i class="fa fa-search"></i>
         </button>
 
-        <button class="btn btn-info mr-1" [routerLink]="['/heroe', heroe.id]">
+        <button (click)="onEditHero(heroe)" class="btn btn-info mr-1">
           <i class="fa fa-pen"></i>
         </button>
 

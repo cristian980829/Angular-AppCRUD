@@ -28,11 +28,6 @@ export class NewHeroComponent implements OnInit {
     this.heroService.saveHero(data);
   }
 
-  cancel() {
-    this.dialogRef.close();
-  }
-
-
   // handleImage(event: any): void {
   //   this.image = event.target.files[0];
   // }

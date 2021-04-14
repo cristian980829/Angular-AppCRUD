@@ -66,15 +66,20 @@ export class TableComponent implements OnInit {
     });
   }
 
+  onEditHero(hero: HeroeModel) {
+    // console.log('Edit post', post);
+    this.openDialog(hero);
+  }
+
   onNewPost() {
     this.openDialog();
   }
 
-  openDialog(post?: HeroeModel): void {
+  openDialog(hero?: HeroeModel): void {
     const config = {
       data: {
-        message: post ? 'Editar heroe' : 'Nuevo heroe',
-        content: post
+        message: hero ? 'Editar heroe' : 'Nuevo heroe',
+        content: hero
       }
     };
 
