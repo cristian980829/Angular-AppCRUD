@@ -11,6 +11,8 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class NewHeroComponent implements OnInit {
 
+  imagen:any;
+
   constructor( private heroService: HeroesService,
                       public dialogRef: MatDialogRef<NewHeroComponent>,
                       private fb:FormBuilder) { }           
@@ -23,6 +25,7 @@ export class NewHeroComponent implements OnInit {
     nombre: new FormControl('', Validators.required),
     estado: new FormControl('', Validators.required),
     universo: new FormControl('', Validators.required),
+    heroImage: new FormControl('', Validators.required),
     poderes: this.fb.array([])
   });
 
@@ -39,11 +42,12 @@ export class NewHeroComponent implements OnInit {
 
   addNewHero(data: HeroeModel) {
     console.log('New post salu2 ', data);
-    this.heroService.saveHero(data);
+    // this.heroService.saveHero(data);
+    this.heroService.preAddAndUpdateHero(data, this.imagen);
   }
 
-  // handleImage(event: any): void {
-  //   this.image = event.target.files[0];
-  // }
+  handleImage(event: any): void {
+    this.imagen = event.target.files[0];
+  }
 
 }

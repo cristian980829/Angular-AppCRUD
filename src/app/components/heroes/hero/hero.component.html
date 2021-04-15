@@ -1,1 +1,24 @@
-<p>hero works!</p>
+<div class="container">
+
+  <div mat-dialog-content>
+    <div style="display: flex;flex-direction: column; margin:1rem auto; width: 500px; height: 300px; padding: 1rem;">
+
+      <label>{{hero.nombre}}</label>
+
+      <div class="container" *ngIf="hero$ | async as hero; else loading">
+        <img [src]="hero.imagen" class="img-thumbnail img-circle">
+        <mat-card class="post-card">
+
+        </mat-card>
+      </div>
+      <ng-template #loading>
+        <div class="container-spinner">
+          <mat-spinner></mat-spinner>
+        </div>
+      </ng-template>
+
+
+    </div>
+  </div>
+
+</div>

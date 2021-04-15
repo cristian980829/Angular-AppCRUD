@@ -71,19 +71,25 @@ export class TableComponent implements OnInit {
     this.openDialog(hero);
   }
 
+  onViewHero(hero: HeroeModel){
+    this.openDialog(hero,true);
+  }
+
   onNewPost() {
     this.openDialog();
   }
 
-  openDialog(hero?: HeroeModel): void {
+  openDialog(hero?: HeroeModel, view?:boolean): void {
     const config = {
+
       data: {
-        message: hero ? 'Editar heroe' : 'Nuevo heroe',
+        message: view ? 'Heroe': hero ? 'Editar heroe' : 'Nuevo heroe',
         content: hero
       }
     };
 
     const dialogRef = this.dialog.open(ModalComponent, config);
+    
     dialogRef.afterClosed().subscribe(result => {
       if(!result || result===true){
         return;

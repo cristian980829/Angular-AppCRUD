@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { map, delay } from 'rxjs/operators';
+import { map, delay, finalize } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { AngularFireStorage } from '@angular/fire/storage';
 import { HeroeModel } from 'src/app/shared/models/heroe.model';
+import { FileI } from 'src/app/shared/models/file.model';
 
 
 @Injectable({
@@ -12,11 +14,14 @@ import { HeroeModel } from 'src/app/shared/models/heroe.model';
 export class HeroesService {
 
 private heroesCollection: AngularFirestoreCollection<HeroeModel>;
+private filePath: any;
+private downloadURL: Observable<string>;
 
-  constructor( private afs: AngularFirestore 
-                        ) {
-                          this.heroesCollection = afs.collection<HeroeModel>('heroes');    
-    }
+  constructor( private afs: AngularFirestore,
+                      private storage: AngularFireStorage ) {
+                        
+    this.heroesCollection = afs.collection<HeroeModel>('heroes');    
+  }
 
     getAllHeroes(): Observable<HeroeModel[]> {
     return this.heroesCollection
@@ -48,7 +53,9 @@ private heroesCollection: AngularFirestoreCollection<HeroeModel>;
       nombre: heroe.nombre,
       poderes: heroe.poderes,
       estado: heroe.estado,
-      universo: heroe.universo
+      universo: heroe.universo,
+      imagen: this.downloadURL,
+      fileRef: this.filePath,
     };
     return this.heroesCollection.add(heroetObj);
   }
@@ -61,7 +68,30 @@ private heroesCollection: AngularFirestoreCollection<HeroeModel>;
 
     delete HEROETEMP.id;
     return this.heroesCollection.doc(heroe.id).update(HEROETEMP);
-    // return this.http.put(`${this.url}/heroes/${heroe.id}.json`,HEROETEMP);
+  }
+
+  getOneHero(hero: HeroeModel): Observable<HeroeModel> {
+    const id= hero.id;
+    return this.afs.doc<HeroeModel>(`heroes/${id}`).valueChanges();
+  }
+
+  preAddAndUpdateHero(hero: HeroeModel, image: FileI): void {
+    this.uploadImage(hero, image);
+  }
+
+  private uploadImage(hero: HeroeModel, image: FileI) {
+    this.filePath = `images/${image.name}`;
+    const fileRef = this.storage.ref(this.filePath);
+    const task = this.storage.upload(this.filePath, image);
+    task.snapshotChanges()
+      .pipe(
+        finalize(() => {
+          fileRef.getDownloadURL().subscribe(urlImage => {
+            this.downloadURL = urlImage;
+            this.saveHero(hero);
+          });
+        })
+      ).subscribe();
   }
 
 }

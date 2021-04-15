@@ -27,7 +27,7 @@ const myModule = [
     MatSidenavModule, 
     MatListModule,
     MatDialogModule,
-    MatRadioModule
+    MatRadioModule,
 ];
 
 @NgModule({

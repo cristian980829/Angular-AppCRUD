@@ -12,8 +12,11 @@
 
         <mat-radio-group formControlName="universo" aria-label="Seleccione un universo">
           <div class="form-group row mt-3" style="padding: 1rem;">
-            <strong>Universo:</strong>
+
             <div class="form-row col">
+              <div class="col">
+                <strong>Universo:</strong>
+              </div>
               <div class="col">
                 <mat-radio-button value="Marvel">Marvel</mat-radio-button>
               </div>
@@ -26,8 +29,11 @@
 
         <mat-radio-group formControlName="estado" aria-label="Seleccione un estado">
           <div class="form-group row" style="padding: 1rem;">
-            <strong>Estado:</strong>
+
             <div class="form-row col">
+              <div class="col">
+                <strong>Estado:</strong>
+              </div>
               <div class="col">
                 <mat-radio-button value="vivo">Vivo(a)</mat-radio-button>
               </div>
@@ -44,7 +50,7 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th>Poder</th>
+                  <th>Poder:</th>
                   <!-- <th>Borrar</th> -->
                 </tr>
               </thead>
@@ -64,30 +70,31 @@
           </div>
         </div>
 
+        <div class="container-input-file">
+          <label class="custom-file">
+            <div class="form-group row" style="padding: 1rem;">
+              <strong>Imagen:</strong>
+              <div class="form-row col">
+                <div class="col">
+                  <input type="file" formControlName="heroImage" (change)="handleImage($event)" />
+                </div>
+              </div>
+            </div>
+          </label>
+        </div>
 
-        <div mat-dialog-actions>
+
+        <div mat-dialog-actions class="mt-5">
           <button mat-raised-button color="warn" [mat-dialog-close]="true">Cancelar</button>
           <button type="submit" mat-raised-button color="primary" [mat-dialog-close]="true">Guardar</button>
         </div>
+
+
 
       </div>
     </div>
 
 
-    <!-- <div class="container-button">
-      <input class="btn btn-outline-danger" value="Cancelar" [mat-dialog-close]="true">
-      <input type="submit" class="btn btn-outline-primary" value="Guardar" [mat-dialog-close]="true">
-    </div> -->
-
-
-
-    <!--  </mat-form-field>
-      <div class="container-input-file">
-        <label class="custom-file">
-          <input type="file" formControlName="imagePost" (change)="handleImage($event)" />
-          <mat-icon>cloud_upload</mat-icon><span>CHOOSE IMAGE</span>
-        </label>
-      </div> -->
 
 
   </form>

@@ -1,10 +1,37 @@
 <h2>{{data.message}}</h2>
-<mat-dialog-content class="dialog-content">
+<!-- <mat-dialog-content class="dialog-content">
   <div *ngIf="data.content; else showNewForm">
     <app-edit-hero [hero]="data.content"></app-edit-hero>
   </div>
 
+
   <ng-template #showNewForm>
     <app-new-hero></app-new-hero>
   </ng-template>
+
+</mat-dialog-content> -->
+
+<mat-dialog-content class="dialog-content">
+
+  <div [ngSwitch]="data.message">
+
+    <div *ngSwitchCase="'Editar heroe'">
+      <app-edit-hero [hero]="data.content"></app-edit-hero>
+    </div>
+
+    <div *ngSwitchCase="'Heroe'">
+      <app-hero [hero]="data.content"></app-hero>
+    </div>
+
+    <div *ngSwitchCase="'Nuevo heroe'">
+      <app-new-hero></app-new-hero>
+    </div>
+
+  </div>
+
+
+  <!-- <ng-template #showNewForm>
+    <app-new-hero></app-new-hero>
+  </ng-template> -->
+
 </mat-dialog-content>
