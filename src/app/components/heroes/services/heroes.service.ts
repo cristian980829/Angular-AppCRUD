@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { map, delay, finalize } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
@@ -48,16 +48,17 @@ private downloadURL: Observable<string>;
 
 
 
-  saveHero( heroe:HeroeModel ){
+  saveHero( heroe:HeroeModel,urlImage:any ){
      const heroetObj = {
       nombre: heroe.nombre,
       poderes: heroe.poderes,
       estado: heroe.estado,
       universo: heroe.universo,
-      imagen: this.downloadURL,
+      imagen: urlImage,
       fileRef: this.filePath,
     };
     return this.heroesCollection.add(heroetObj);
+    // console.log(this.heroesCollection.add(heroetObj));
   }
 
   //Se crea un objeto temporal sin el id para que al guardarlo en firebase no se cree el atributo id, y se mantiene el objeto original para obtener el id del que se actualizará
@@ -75,23 +76,16 @@ private downloadURL: Observable<string>;
     return this.afs.doc<HeroeModel>(`heroes/${id}`).valueChanges();
   }
 
-  preAddAndUpdateHero(hero: HeroeModel, image: FileI): void {
-    this.uploadImage(hero, image);
-  }
-
-  private uploadImage(hero: HeroeModel, image: FileI) {
+  uploadImageAndGetUrl(image: FileI) {
     this.filePath = `images/${image.name}`;
     const fileRef = this.storage.ref(this.filePath);
     const task = this.storage.upload(this.filePath, image);
-    task.snapshotChanges()
-      .pipe(
-        finalize(() => {
-          fileRef.getDownloadURL().subscribe(urlImage => {
-            this.downloadURL = urlImage;
-            this.saveHero(hero);
-          });
-        })
-      ).subscribe();
+    const DATA = {
+      fileRef,
+      task
+    }
+    return DATA;
   }
+
 
 }
