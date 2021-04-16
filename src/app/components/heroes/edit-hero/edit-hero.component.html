@@ -7,6 +7,7 @@
         <mat-form-field>
           <mat-label>Nombre</mat-label>
           <input matInput placeholder="Nombre" formControlName="nombre">
+          <small *ngIf="invalidName" class="form-text text-danger">Debe ingresar al menos 2 carácteres</small>
         </mat-form-field>
 
         <mat-radio-group formControlName="universo" aria-label="Seleccione un universo">
@@ -58,19 +59,39 @@
                     <input class="form-control" type="text" [formControlName]="i">
                   </td>
                   <td>
-                    <button (click)="borrarPoderes(i)" mat-stroked-button color="warn" class="btn-block">Quitar</button>
+                    <button (click)="removePower(i)" mat-stroked-button color="warn" class="btn-block">Quitar</button>
                   </td>
                 </tr>
               </tbody>
             </table>
-            <button type="button" (click)="agregarPoderes()" mat-stroked-button color="primary"
+            <button type="button" (click)="addPower()" mat-stroked-button color="primary"
               class="mb-5 btn-block">Añadir</button>
           </div>
         </div>
 
-        <div mat-dialog-actions>
-          <button mat-raised-button color="warn" [mat-dialog-close]="true">Cancelar</button>
-          <button type="submit" mat-raised-button color="primary" [mat-dialog-close]="true">Guardar</button>
+        <div class="container-input-file">
+          <label class="custom-file">
+            <div class="form-group row" style="padding: 1rem;">
+              <strong>Imagen:</strong>
+              <div class="form-row col">
+                <div class="col">
+                  <input type="file" formControlName="heroImage" (change)="handleImage($event)" />
+                </div>
+              </div>
+            </div>
+          </label>
+        </div>
+
+        <div mat-dialog-actions class="mt-5">
+          <button type="submit" class="btn btn-primary btn-block" [disabled]="loading || editHeroForm.invalid">
+            <i [ngClass]="{ 'fa fa-save': !loading, 'fas fa-sync-alt fa-spin': loading }"></i>
+            <span *ngIf="!loading"> Actualizar</span>
+            <span *ngIf="loading"> Actualizando</span>
+          </button>
+
+          <button class="btn btn-danger btn-block" [disabled]="loading" [mat-dialog-close]="true"><i
+              class="fas fa-ban"></i>
+            Cancelar</button>
         </div>
 
       </div>

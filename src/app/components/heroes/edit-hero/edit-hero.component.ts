@@ -2,6 +2,10 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormArray, FormBuilder } from '@angular/forms';
 import { HeroeModel } from '../../../shared/models/heroe.model';
 import { HeroesService } from '../services/heroes.service';
+import { ValidadoresService } from '../services/validadores.service';
+import { finalize } from 'rxjs/operators';
+import { MatDialogRef } from '@angular/material/dialog';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -12,9 +16,24 @@ import { HeroesService } from '../services/heroes.service';
 export class EditHeroComponent implements OnInit {
 
   @Input() hero: HeroeModel;
-
+  private image:any;
+  private originalImage: any;
+  loading:boolean=false;
+  
   constructor( private heroService:HeroesService,
-    private fb: FormBuilder ) { }
+    private fb: FormBuilder,
+    private validadores: ValidadoresService,
+    public dialogRef: MatDialogRef<EditHeroComponent>) { }
+    
+    ngOnInit(): void {
+      this.image = this.hero.imagen;
+      this.originalImage = this.hero.imagen;
+      this.initValuesForm();
+    }
+
+    get invalidName(){
+    return this.editHeroForm.get('nombre').invalid && this.editHeroForm.get('nombre').touched;
+  }
 
   get poderes(){
     return this.editHeroForm.get('poderes') as FormArray;
@@ -22,27 +41,61 @@ export class EditHeroComponent implements OnInit {
 
   public editHeroForm = new FormGroup({
     id: new FormControl('', Validators.required),
-    nombre: new FormControl('', Validators.required),
+    nombre: new FormControl('', [Validators.required, Validators.minLength(2)]),
     estado: new FormControl('', Validators.required),
     universo: new FormControl('', Validators.required),
-    poderes: this.fb.array([])
+    heroImage: new FormControl(''),
+    poderes: new FormArray([], [Validators.required, this.validadores.noPower]),
   });
 
-  ngOnInit(): void {
-    this.initValuesForm();
-  }
 
-  agregarPoderes(){
+  addPower(){
     this.poderes.push( this.fb.control('') );
   }
 
-  borrarPoderes(i:number){
+  removePower(i:number){
     this.poderes.removeAt(i);
   }
 
-  editHero(data: HeroeModel) {
-    console.log('Hero edit: ', data);
-    this.heroService.editHero(data);
+  editHero(hero: HeroeModel) {
+    this.validateData();
+    if (this.image === this.originalImage) {
+      hero.imagen = this.originalImage;
+      this.heroService.editHero(hero);
+    } else {
+      this.loading=true;
+      const DATA = this.heroService.uploadImageAndGetUrl(this.image);
+      DATA.task.snapshotChanges()
+      .pipe(
+        finalize(() => {
+          DATA.fileRef.getDownloadURL().subscribe(urlImage => {
+            this.heroService.saveHero(hero, urlImage);
+            this.loading=false;
+            this.dialogRef.close();
+            Swal.fire({
+             icon: 'success',
+             title: 'Actualizado con exito',
+             showConfirmButton: true
+            })
+          });
+        })
+      ).subscribe();
+    }
+    console.log('Hero edit: ', hero);
+  }
+
+  
+
+  validateData(){
+    if(this.editHeroForm.invalid){
+       return  Object.values(this.editHeroForm.controls).forEach(control => {
+        if( control instanceof FormGroup ){
+          Object.values( control.controls ).forEach(control => control.markAsTouched());
+        }else{
+          control.markAsTouched();
+        }
+      });
+    }
   }
 
   private initValuesForm(): void {
@@ -53,6 +106,10 @@ export class EditHeroComponent implements OnInit {
       universo: this.hero.universo
     });
     this.hero.poderes.forEach(valor => this.poderes.push(this.fb.control(valor))); 
+  }
+
+  handleImage(event: any): void {
+    this.image = event.target.files[0];
   }
 
 }

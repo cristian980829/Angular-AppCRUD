@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { map, delay, finalize } from 'rxjs/operators';
-import { Observable, Subscription } from 'rxjs';
+import { map, delay } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
@@ -48,27 +48,27 @@ private downloadURL: Observable<string>;
 
 
 
-  saveHero( heroe:HeroeModel,urlImage:any ){
+  saveHero( hero:HeroeModel,urlImage:any ){
      const heroetObj = {
-      nombre: heroe.nombre,
-      poderes: heroe.poderes,
-      estado: heroe.estado,
-      universo: heroe.universo,
+      nombre: hero.nombre,
+      poderes: hero.poderes,
+      estado: hero.estado,
+      universo: hero.universo,
       imagen: urlImage,
       fileRef: this.filePath,
     };
-    return this.heroesCollection.add(heroetObj);
+
+    if (hero.id) {
+      return this.heroesCollection.doc(hero.id).update(heroetObj);
+    } else {
+      return this.heroesCollection.add(heroetObj);
+    }
+    
     // console.log(this.heroesCollection.add(heroetObj));
   }
 
-  //Se crea un objeto temporal sin el id para que al guardarlo en firebase no se cree el atributo id, y se mantiene el objeto original para obtener el id del que se actualizará
-  editHero( heroe:HeroeModel ){
-    const HEROETEMP = {
-      ...heroe
-    }
-
-    delete HEROETEMP.id;
-    return this.heroesCollection.doc(heroe.id).update(HEROETEMP);
+  editHero( hero:HeroeModel ){
+      return this.heroesCollection.doc(hero.id).update(hero);
   }
 
   getOneHero(hero: HeroeModel): Observable<HeroeModel> {

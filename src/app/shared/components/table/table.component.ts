@@ -28,9 +28,9 @@ export class TableComponent implements OnInit {
                       public dialog: MatDialog ) { }
 
   ngOnInit(): void {
-    // this.cargando=true
+    this.cargando=true
     this.heroService.getAllHeroes().subscribe(resp=>{
-      // this.cargando=false;
+      this.cargando=false;
       this.dataSource.data = resp;
       console.log(resp);
     });
@@ -47,7 +47,7 @@ export class TableComponent implements OnInit {
 
   onDeleteHeroe(heroe: HeroeModel) {
     Swal.fire({
-      title: '¿Seguro desea eliminar este registro?',
+      title: '¿Seguro que desea eliminar este registro?',
       text: `!No podrá revertir los cambios!`,
       icon: 'warning',
       showCancelButton: true,
