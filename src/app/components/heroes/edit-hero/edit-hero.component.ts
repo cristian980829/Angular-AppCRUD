@@ -58,33 +58,26 @@ export class EditHeroComponent implements OnInit {
   }
 
   editHero(hero: HeroeModel) {
+    this.loading=true;
     this.validateData();
     if (this.image === this.originalImage) {
       hero.imagen = this.originalImage;
       this.heroService.editHero(hero);
+      this.endedProcess();
     } else {
-      this.loading=true;
       const DATA = this.heroService.uploadImageAndGetUrl(this.image);
       DATA.task.snapshotChanges()
       .pipe(
         finalize(() => {
           DATA.fileRef.getDownloadURL().subscribe(urlImage => {
             this.heroService.saveHero(hero, urlImage);
-            this.loading=false;
-            this.dialogRef.close();
-            Swal.fire({
-             icon: 'success',
-             title: 'Actualizado con exito',
-             showConfirmButton: true
-            })
+            this.endedProcess();
           });
         })
       ).subscribe();
     }
     console.log('Hero edit: ', hero);
   }
-
-  
 
   validateData(){
     if(this.editHeroForm.invalid){
@@ -106,6 +99,16 @@ export class EditHeroComponent implements OnInit {
       universo: this.hero.universo
     });
     this.hero.poderes.forEach(valor => this.poderes.push(this.fb.control(valor))); 
+  }
+
+  endedProcess(){
+    this.loading=false;
+    this.dialogRef.close();
+    Swal.fire({
+    icon: 'success',
+    title: 'Actualizado con exito',
+    showConfirmButton: true
+    })
   }
 
   handleImage(event: any): void {

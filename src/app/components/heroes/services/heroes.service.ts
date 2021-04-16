@@ -46,8 +46,6 @@ private downloadURL: Observable<string>;
     
   }
 
-
-
   saveHero( hero:HeroeModel,urlImage:any ){
      const heroetObj = {
       nombre: hero.nombre,
@@ -71,8 +69,8 @@ private downloadURL: Observable<string>;
       return this.heroesCollection.doc(hero.id).update(hero);
   }
 
-  getOneHero(hero: HeroeModel): Observable<HeroeModel> {
-    const id= hero.id;
+
+  getOneHero(id:string): Observable<HeroeModel> {
     return this.afs.doc<HeroeModel>(`heroes/${id}`).valueChanges();
   }
 

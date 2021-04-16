@@ -4,7 +4,6 @@ import { HeroesService } from '../services/heroes.service';
 import { HeroeModel } from '../../../shared/models/heroe.model';
 import { MatDialogRef } from '@angular/material/dialog';
 import { finalize } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 import { ValidadoresService } from '../services/validadores.service';
 
@@ -17,7 +16,6 @@ export class NewHeroComponent implements OnInit {
 
   imagen:any;
   loading:boolean=false;
-  url: Observable<string>;
   newHeroForm:FormGroup;
 
   constructor( private heroService: HeroesService,
@@ -27,7 +25,6 @@ export class NewHeroComponent implements OnInit {
 
        this.createForm();
      }           
-    
     
     ngOnInit(): void {
       // console.log(this.newHeroForm);
@@ -50,7 +47,6 @@ export class NewHeroComponent implements OnInit {
     poderes: new FormArray([], [Validators.required, this.validadores.noPower]),
   });
 }
-
 
  addPower(){
     this.poderes.push( this.fb.control('') );

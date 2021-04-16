@@ -48,7 +48,7 @@
       <th class="text-center" mat-header-cell *matHeaderCellDef> Tools </th>
       <td class="text-center" mat-cell *matCellDef=" let heroe">
 
-        <button (click)="onViewHero(heroe)" class="btn btn-success mr-1">
+        <button [routerLink]="['/hero', heroe.id]" class="btn btn-success mr-1">
           <i class="fa fa-search"></i>
         </button>
 

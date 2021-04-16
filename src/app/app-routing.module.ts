@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ContainerAppComponent } from './components/pages/container-app/container-app.component';
+import { HeroComponent } from './components/heroes/hero/hero.component';
 
 const routes: Routes = [
    {
@@ -24,6 +25,7 @@ const routes: Routes = [
         loadChildren: () =>
           import('./components/heroes/hero-list/hero-list.module').then(m => m.HeroListModule)
       },
+      { path: 'hero/:id', component: HeroComponent },
       {
         path: '',
         redirectTo: 'home',
