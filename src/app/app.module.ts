@@ -21,6 +21,7 @@ import { NewHeroComponent } from './components/heroes/new-hero/new-hero.componen
 import { HeroComponent } from './components/heroes/hero/hero.component';
 import { ModalComponent } from './shared/components/modal/modal.component';
 import { ToolbarComponent } from './shared/components/toolbar/toolbar.component';
+import { RatingModule } from 'ng-starrating';
 
 
 
@@ -44,7 +45,8 @@ import { ToolbarComponent } from './shared/components/toolbar/toolbar.component'
     MaterialModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     BrowserAnimationsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RatingModule
   ],
   providers: [ {provide: BUCKET, useValue:'gs://appcrudv2.appspot.com' }],
   bootstrap: [AppComponent]

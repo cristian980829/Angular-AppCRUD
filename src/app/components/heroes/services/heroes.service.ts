@@ -54,6 +54,7 @@ private downloadURL: Observable<string>;
       universo: hero.universo,
       imagen: urlImage,
       fileRef: this.filePath,
+      valoracion: hero.valoracion
     };
 
     if (hero.id) {

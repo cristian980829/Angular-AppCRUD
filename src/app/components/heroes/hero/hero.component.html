@@ -1,23 +1,55 @@
-<div *ngIf="hero">
+<div class="animated fadeIn fast" *ngIf="hero">
 
-  <h1 class="animated fadeIn"><img *ngIf="hero.universo=='DC'" src="assets/img/DC_logo.png" class="img_logo">
-    <img *ngIf="hero.universo=='Marvel'" src="assets/img/Marvel_logo.png" class="img_logo"> {{ hero.nombre | uppercase
-    }}
-  </h1>
+
+  <div class="row">
+    <div class="col">
+      <h1><img *ngIf="hero.universo=='DC'" src="assets/img/DC_logo.png" class="img_logo">
+        <img *ngIf="hero.universo=='Marvel'" src="assets/img/Marvel_logo.png" class="img_logo"> {{ hero.nombre |
+        uppercase
+        }}
+      </h1>
+    </div>
+    <div class="col text-right">
+      <button [routerLink]="'/heroList'" class="btn btn-outline-danger">
+        <i class="fas fa-arrow-circle-left"></i> Regresar
+      </button>
+    </div>
+  </div>
+
   <hr>
 
-  <div class="row row-cols-1 row-cols-md-3 g-4">
-    <div class="col animated fadeIn fast">
+  <div class="row text-white">
+    <div class="col-10">
+
+      <star-rating [value]="hero.valoracion" totalstars="5" checkedcolor="blue" uncheckedcolor="grey" size="44px"
+        readonly="false"></star-rating>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
       <div class="card h-60 img-circle-card">
         <img [src]="hero.imagen" class="img-thumbnail img-circle">
-        <div class="card-body">
-          <h5 class="card-title"> {{ hero.estado | uppercase }} </h5>
+        <div class="text-center mt-2">
+          <h3>Valoración: {{ hero.valoracion }}</h3>
         </div>
-
       </div>
     </div>
+
     <div class="col">
-      <a [routerLink]="'/heroList'" class="btn btn-outline-danger btn-block">Regresasr</a>
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th>Poderes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let poder of hero.poderes; let i = index">
+            <td> {{ poder }} </td>
+          </tr>
+        </tbody>
+      </table>
+
     </div>
   </div>
 

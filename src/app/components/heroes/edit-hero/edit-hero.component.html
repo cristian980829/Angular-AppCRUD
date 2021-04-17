@@ -82,6 +82,22 @@
           </label>
         </div>
 
+        <mat-form-field class="mt-5">
+          <mat-label>Valoración:</mat-label>
+          <input #valoracion autocomplete="off" type="text" matInput placeholder="Valoración"
+            formControlName="valoracion">
+          <small *ngIf="invalidValoration" class="form-text text-danger">El rango debe estár entre 0.0 - 5.0 y no usar
+            comas.</small>
+        </mat-form-field>
+
+        <div class="row text-white">
+          <div class="col-10">
+
+            <star-rating *ngIf="!invalidValoration" [value]="valoracion.value" totalstars="5" checkedcolor="blue"
+              uncheckedcolor="grey" size="40px" readonly="false"></star-rating>
+          </div>
+        </div>
+
         <div mat-dialog-actions class="mt-5">
           <button type="submit" class="btn btn-primary btn-block" [disabled]="loading || editHeroForm.invalid">
             <i [ngClass]="{ 'fa fa-save': !loading, 'fas fa-sync-alt fa-spin': loading }"></i>

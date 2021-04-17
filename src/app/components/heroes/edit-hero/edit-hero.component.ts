@@ -35,6 +35,10 @@ export class EditHeroComponent implements OnInit {
     return this.editHeroForm.get('nombre').invalid && this.editHeroForm.get('nombre').touched;
   }
 
+  get invalidValoration(){
+    return this.editHeroForm.get('valoracion').invalid && this.editHeroForm.get('valoracion').touched;
+  }
+
   get poderes(){
     return this.editHeroForm.get('poderes') as FormArray;
   }
@@ -45,7 +49,8 @@ export class EditHeroComponent implements OnInit {
     estado: new FormControl('', Validators.required),
     universo: new FormControl('', Validators.required),
     heroImage: new FormControl(''),
-    poderes: new FormArray([], [Validators.required, this.validadores.noPower]),
+    poderes: new FormArray([], [Validators.required, this.validadores.powerEntered]),
+    valoracion: new FormControl('', [Validators.required, Validators.pattern(/^\d{1}(\.\d{1})?$/), this.validadores.validValoration])
   });
 
 
@@ -96,7 +101,8 @@ export class EditHeroComponent implements OnInit {
       id: this.hero.id,
       nombre: this.hero.nombre,
       estado: this.hero.estado,
-      universo: this.hero.universo
+      universo: this.hero.universo,
+      valoracion: this.hero.valoracion
     });
     this.hero.poderes.forEach(valor => this.poderes.push(this.fb.control(valor))); 
   }

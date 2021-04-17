@@ -24,6 +24,7 @@
     "@angular/platform-browser-dynamic": "~11.2.3",
     "@angular/router": "~11.2.3",
     "firebase": "^7.0 || ^8.0",
+    "ng-starrating": "^1.0.20",
     "rxjs": "~6.6.0",
     "sweetalert2": "^10.16.0",
     "tslib": "^2.0.0",

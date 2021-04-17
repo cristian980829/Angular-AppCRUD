@@ -6,4 +6,5 @@ export interface HeroeModel {
   poderes:string[];
   imagen?: any;
   fileRef?: string;
+  valoracion?:string;
 }

@@ -34,6 +34,10 @@ export class NewHeroComponent implements OnInit {
     return this.newHeroForm.get('nombre').invalid && this.newHeroForm.get('nombre').touched;
   }
 
+  get invalidValoration(){
+    return this.newHeroForm.get('valoracion').invalid && this.newHeroForm.get('valoracion').touched;
+  }
+
   get poderes(){
     return this.newHeroForm.get('poderes') as FormArray;
   }
@@ -44,7 +48,9 @@ export class NewHeroComponent implements OnInit {
     estado: new FormControl('', Validators.required),
     universo: new FormControl('', Validators.required),
     heroImage: new FormControl('', Validators.required),
-    poderes: new FormArray([], [Validators.required, this.validadores.noPower]),
+    poderes: new FormArray([], [Validators.required, this.validadores.powerEntered]),
+    valoracion: new FormControl('', [Validators.required, Validators.pattern(/^\d{1}(\.\d{1})?$/), this.validadores.validValoration])
+    ///^\d{1,2}(\.\d{1})*(,\d{1})?$/ val. para 10 estrellas
   });
 }
 
@@ -57,6 +63,7 @@ export class NewHeroComponent implements OnInit {
   }
 
   addNewHero(hero: HeroeModel) {
+    console.log(hero);
     this.validateData();
       this.loading=true;
       const DATA = this.heroService.uploadImageAndGetUrl(this.imagen);
