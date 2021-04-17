@@ -31,7 +31,10 @@
       <div class="card h-60 img-circle-card">
         <img [src]="hero.imagen" class="img-thumbnail img-circle">
         <div class="text-center mt-2">
-          <h3>Valoración: {{ hero.valoracion }}</h3>
+          <h3><i class="fas fa-star-half-alt"></i> Valoración: {{ hero.valoracion }}</h3>
+        </div>
+        <div class="text-center">
+          <h3><i class="fas fa-toggle-on"></i> Estado: {{ hero.estado }}</h3>
         </div>
       </div>
     </div>
@@ -40,12 +43,12 @@
       <table class="table">
         <thead class="thead-dark">
           <tr>
-            <th>Poderes</th>
+            <th><i class="fab fa-superpowers"></i> Poderes</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let poder of hero.poderes; let i = index">
-            <td> {{ poder }} </td>
+            <td><i class="fas fa-angle-right"></i> {{ poder }} </td>
           </tr>
         </tbody>
       </table>
