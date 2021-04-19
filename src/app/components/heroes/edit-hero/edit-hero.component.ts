@@ -67,9 +67,10 @@ export class EditHeroComponent implements OnInit {
     this.validateData();
     if (this.image === this.originalImage) {
       hero.imagen = this.originalImage;
-      this.heroService.editHero(hero);
+      this.heroService.saveHero(hero);
       this.endedProcess();
-    } else {
+    } 
+    else {
       const DATA = this.heroService.uploadImageAndGetUrl(this.image);
       DATA.task.snapshotChanges()
       .pipe(
@@ -109,12 +110,12 @@ export class EditHeroComponent implements OnInit {
 
   endedProcess(){
     this.loading=false;
-    this.dialogRef.close();
     Swal.fire({
-    icon: 'success',
-    title: 'Actualizado con exito',
-    showConfirmButton: true
-    })
+      icon: 'success',
+      title: 'Actualizado con exito',
+      showConfirmButton: true
+    });
+    this.dialogRef.close();
   }
 
   handleImage(event: any): void {

@@ -15,16 +15,16 @@ import { ValidadoresService } from '../services/validadores.service';
 export class NewHeroComponent implements OnInit {
 
   imagen:any;
-  loading:boolean=false;
   newHeroForm:FormGroup;
+  loading=false;
 
-  constructor( private heroService: HeroesService,
+  constructor( public heroService: HeroesService,
     public dialogRef: MatDialogRef<NewHeroComponent>,
     private fb:FormBuilder,
     private validadores: ValidadoresService) {
 
-       this.createForm();
-     }           
+      this.createForm();
+     }
     
     ngOnInit(): void {
       // console.log(this.newHeroForm);
@@ -72,13 +72,7 @@ export class NewHeroComponent implements OnInit {
         finalize(() => {
           DATA.fileRef.getDownloadURL().subscribe(urlImage => {
             this.heroService.saveHero(hero, urlImage);
-            this.loading=false;
-            this.dialogRef.close();
-            Swal.fire({
-             icon: 'success',
-             title: 'Registrado exitosamente',
-             showConfirmButton: true
-            })
+            this.endedProcess();
           });
         })
       ).subscribe();
@@ -94,6 +88,16 @@ export class NewHeroComponent implements OnInit {
         }
       });
     }
+  }
+  
+  endedProcess(){
+    this.loading=false;
+    Swal.fire({
+      icon: 'success',
+      title: 'Registrado con exito',
+      showConfirmButton: true
+    });
+    this.dialogRef.close();
   }
 
   handleImage(event: any): void {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { map, delay } from 'rxjs/operators';
+import { map, delay, finalize, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
@@ -13,6 +13,7 @@ import { FileI } from 'src/app/shared/models/file.model';
 })
 export class HeroesService {
 
+public loading=false;
 private heroesCollection: AngularFirestoreCollection<HeroeModel>;
 private filePath: any;
 private downloadURL: Observable<string>;
@@ -37,16 +38,19 @@ private downloadURL: Observable<string>;
       );
   }
 
-  deleteHeroById(heroe: HeroeModel) {
-    return this.heroesCollection.doc(heroe.id).delete();
-  }
-
   getHero(id:string): Observable<HeroeModel>{
     return this.afs.doc<HeroeModel>(`heroes/${id}`).valueChanges();
-    
   }
 
-  saveHero( hero:HeroeModel,urlImage:any ){
+  getOneHero(id:string): Observable<HeroeModel> {
+    return this.afs.doc<HeroeModel>(`heroes/${id}`).valueChanges();
+  }
+  
+    saveHero( hero:HeroeModel,urlImage?:any ){
+      if(!urlImage){
+        return this.heroesCollection.doc(hero.id).update(hero);
+      }
+
      const heroetObj = {
       nombre: hero.nombre,
       poderes: hero.poderes,
@@ -62,29 +66,21 @@ private downloadURL: Observable<string>;
     } else {
       return this.heroesCollection.add(heroetObj);
     }
-    
-    // console.log(this.heroesCollection.add(heroetObj));
   }
-
-  editHero( hero:HeroeModel ){
-      return this.heroesCollection.doc(hero.id).update(hero);
-  }
-
-
-  getOneHero(id:string): Observable<HeroeModel> {
-    return this.afs.doc<HeroeModel>(`heroes/${id}`).valueChanges();
-  }
-
-  uploadImageAndGetUrl(image: FileI) {
-    this.filePath = `images/${image.name}`;
-    const fileRef = this.storage.ref(this.filePath);
-    const task = this.storage.upload(this.filePath, image);
-    const DATA = {
-      fileRef,
-      task
+  
+    uploadImageAndGetUrl(image: FileI) {
+      this.filePath = `images/${image.name}`;
+      const fileRef = this.storage.ref(this.filePath);
+      const task = this.storage.upload(this.filePath, image);
+      const DATA = {
+        fileRef,
+        task
+      }
+      return DATA;
     }
-    return DATA;
+  
+  deleteHeroById(heroe: HeroeModel) {
+    return this.heroesCollection.doc(heroe.id).delete();
   }
-
 
 }
