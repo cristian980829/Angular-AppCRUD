@@ -4,7 +4,7 @@ export interface HeroeModel {
   universo:string;
   id?: string;
   poderes:string[];
-  imagen?: any;
+  imagen?: string;
   fileRef?: string;
   valoracion?:string;
 }

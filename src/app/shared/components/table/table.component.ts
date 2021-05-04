@@ -9,6 +9,7 @@ import { HeroesService } from '../../../components/heroes/services/heroes.servic
 import { MatDialog } from '@angular/material/dialog';
 import { ModalComponent } from '../modal/modal.component';
 import { catchError } from 'rxjs/operators';
+import { EditHeroComponent } from '../../../components/heroes/edit-hero/edit-hero.component';
 
 @Component({
   selector: 'app-table',
@@ -77,7 +78,6 @@ export class TableComponent implements OnInit {
 
   openDialog(hero?: HeroeModel): void {
     const config = {
-
       data: {
         message: hero ? 'Editar heroe' : 'Nuevo heroe',
         content: hero
@@ -92,7 +92,7 @@ export class TableComponent implements OnInit {
       }
       console.log(`Dialog result ${result}`);
     }, (err)=>{
-        console.log(`El error es: ${catchError}`);
+        console.log(`El error es: ${err}`);
     });
   }
 

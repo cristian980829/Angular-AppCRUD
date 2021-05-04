@@ -50,7 +50,7 @@ private downloadURL: Observable<string>;
       if(!urlImage){
         return this.heroesCollection.doc(hero.id).update(hero);
       }
-
+     
      const heroetObj = {
       nombre: hero.nombre,
       poderes: hero.poderes,

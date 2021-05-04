@@ -1,52 +1,42 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+// import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { ReactiveFormsModule } from '@angular/forms';
-// import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 //firestore modules
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireModule } from '@angular/fire';
-import { environment } from '../environments/environment';
 import { AngularFireStorageModule, BUCKET } from '@angular/fire/storage';
 
-import { MaterialModule } from './material.module';
+import { environment } from '../environments/environment';
 
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ContainerAppComponent } from './components/pages/container-app/container-app.component';
-import { EditHeroComponent } from './components/heroes/edit-hero/edit-hero.component';
-import { NewHeroComponent } from './components/heroes/new-hero/new-hero.component';
-import { HeroComponent } from './components/heroes/hero/hero.component';
-import { ModalComponent } from './shared/components/modal/modal.component';
-import { ToolbarComponent } from './shared/components/toolbar/toolbar.component';
-import { RatingModule } from 'ng-starrating';
 
+import { AppComponent } from './app.component';
+import { ContainerAppComponent } from './components/pages/container-app/container-app.component';
+
+import { HeroesModule } from './components/heroes/heroes.module';
+import { ComponentsModule } from './shared/components/components.module';
+import { ModalComponent } from './shared/components/modal/modal.component';
+import { MaterialModule } from './material.module';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     ContainerAppComponent,
-    EditHeroComponent,
-    NewHeroComponent,
-    HeroComponent,
-    ModalComponent,
-    ToolbarComponent
+    ModalComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule,
-    // HttpClientModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
-    MaterialModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     BrowserAnimationsModule,
-    ReactiveFormsModule,
-    RatingModule
+    HeroesModule,
+    ComponentsModule,
+    MaterialModule
   ],
   providers: [ {provide: BUCKET, useValue:'gs://appcrudv2.appspot.com' }],
   bootstrap: [AppComponent]

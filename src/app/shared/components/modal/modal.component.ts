@@ -7,7 +7,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./modal.component.css']
 })
 export class ModalComponent implements OnInit {
-  constructor(public dialog: MatDialogRef<ModalComponent>,
+  constructor( public dialog: MatDialogRef<ModalComponent>,
     // tslint:disable-next-line: align
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { }

@@ -7,6 +7,9 @@ import { MaterialModule } from 'src/app/material.module';
 
 @NgModule({
   declarations: [HomeComponent ],
-  imports: [CommonModule, HomeRoutingModule, MaterialModule]
+  imports: [
+    CommonModule, 
+    HomeRoutingModule, 
+    MaterialModule]
 })
 export class HomeModule { }
