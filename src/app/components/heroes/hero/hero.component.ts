@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { HeroeModel } from 'src/app/shared/models/heroe.model';
 import { ActivatedRoute } from '@angular/router';
 import { HeroesService } from '../services/heroes.service';
+import { Location } from '@angular/common';
 
 
 @Component({
@@ -13,7 +14,8 @@ export class HeroComponent implements OnInit {
   hero:HeroeModel;
   
   constructor( private route: ActivatedRoute, 
-    private heroService: HeroesService ) { }
+    private heroService: HeroesService,
+    private _location:Location ) { }
   
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -22,6 +24,8 @@ export class HeroComponent implements OnInit {
     })
   }
 
-
+  backClicked() {
+    this._location.back();
+  }
 
 }
