@@ -5,7 +5,6 @@
     </button>
   </div>
 </div>
-<!-- *ngIf="!cargando && dataSource.data.length>0" -->
 <mat-form-field class="col">
   <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter" />
 </mat-form-field>
@@ -71,21 +70,10 @@
 
 
 
-<!-- <div *ngIf="!cargando && dataSource.data.length===0" class="alert alert-warning text-center mt-3 animated fadeIn">
-  <h4 class="alert-heading">No hay registros</h4>
-  <p>
-    <i class="fa fa-exclamation fa-2x">
-    </i>
-  </p>
-</div> -->
-
-<div *ngIf="cargando" class="alert alert-info text-center mt-3 animated fadeIn">
-  <h4 class="alert-heading"> Cargando</h4>
+<div *ngIf="loading" class="alert alert-info text-center mt-3 animated fadeIn loading_box">
+  <h2 class="alert-heading">Cargando datos</h2>
   <p>
     <i class="fa fa-sync-alt fa-spin fa-2x">
     </i>
-  </p>
-  <p class="mb-0">
-    Espere por favor
   </p>
 </div>

@@ -1,6 +1,8 @@
-<div class="row">
-  <div class="col-md-3 mb-5 animate__animated animate__fadeIn animate__faster" *ngFor="let hero of heroes">
-    <img (click)="onHeroClick(hero)" [src]="hero.imagen" class="img-fluid poster puntero">
+<div *ngIf="heroes" class="row">
+  <div class="col-md-3 mb-5 animate__animated animate__fadeIn animate__faster mt-5"
+    *ngFor="let hero of heroes | paginate:page_size:page_number">
+    <img (click)="onHeroClick(hero)" [src]="hero.imagen" class="img-fluid hero_card pointer
+">
 
     <div>
       <div class="mt-3">
@@ -24,4 +26,29 @@
     </div>
 
   </div>
+</div>
+
+<ngb-pagination *ngIf="length_" class="d-flex justify-content-center" [collectionSize]="length_" [(page)]="page_number"
+  [boundaryLinks]="true">
+  <ng-template ngbPaginationPages let-page let-pages="pages">
+    <li class="ngb-custom-pages-item" *ngIf="pages.length > 0">
+      <div class="form-group d-flex flex-nowrap px-2">
+        <label id="paginationInputLabel" for="paginationInput" class="col-form-label mr-2 ml-1">Page</label>
+        <input #i type="text" inputmode="numeric" pattern="[0-9]*" class="form-control custom-pages-input"
+          id="paginationInput" [value]="page" (keyup.enter)="selectPage(i.value)" (blur)="selectPage(i.value)"
+          (input)="formatInput($any($event).target)" aria-labelledby="paginationInputLabel paginationDescription"
+          style="width: 2.5rem" />
+        <span id="paginationDescription" class="col-form-label text-nowrap px-2">
+          of {{pages.length}}</span>
+      </div>
+    </li>
+  </ng-template>
+</ngb-pagination>
+
+<div *ngIf="length_===0" class="alert alert-warning text-center mt-3 animated fadeIn">
+  <h4 class="alert-heading">No hay registros</h4>
+  <p>
+    <i class="fa fa-exclamation fa-2x">
+    </i>
+  </p>
 </div>

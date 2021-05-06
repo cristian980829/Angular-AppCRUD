@@ -6,13 +6,18 @@ import { HomeComponent } from './home.component';
 import { MaterialModule } from 'src/app/material.module';
 import { RatingModule } from 'ng-starrating';
 
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { PaginatePipe } from '../../../pipes/paginate.pipe';
+
+
 @NgModule({
-  declarations: [HomeComponent ],
+  declarations: [HomeComponent, PaginatePipe ],
   imports: [
     CommonModule, 
     HomeRoutingModule, 
     MaterialModule,
-    RatingModule
+    RatingModule,
+    NgbModule
   ]
 })
 export class HomeModule { }

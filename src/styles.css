@@ -3,11 +3,11 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 .main-container {
-  margin-top: 40px;
-  margin-bottom: 150px;
+  /* margin-top: 40px; */
+  margin-bottom: 50px;
 }
 
-.puntero {
+.pointer {
   cursor: pointer;
 }
 
@@ -64,21 +64,41 @@ body {
 
 .img-circle {
   border-radius: 10%;
-  width: 210px;
-  height: 210px;
+  max-height: 200px;
+  max-width: 200px;
 }
 
 .img-circle-card {
   border-radius: 10%;
-  width: 210px;
-  height: 300px;
+  max-height: 450px;
+  max-width: 230px;
+  margin: 20px 0px 0px 0px;
+  padding: 15px;
 }
 
 .img_logo {
   width: 60px;
 }
 
-.img-thumb {
-  width: 50px;
-  height: 50px;
+/* .img-thumb {
+  max-height: 200px;
+  max-width: 200px;
+} */
+
+.loading_box {
+  position: fixed;
+  top: 50%;
+  left: 44%;
+  width: 190px;
+  height: 120px;
+  border-radius: 10%;
+  padding: 20px;
+}
+
+.hero_card {
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  /* margin: 5px; */
+  max-height: 350px;
+  max-width: 230px;
 }

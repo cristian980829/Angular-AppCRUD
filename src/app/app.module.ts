@@ -19,6 +19,7 @@ import { HeroesModule } from './components/heroes/heroes.module';
 import { ComponentsModule } from './shared/components/components.module';
 import { ModalComponent } from './shared/components/modal/modal.component';
 import { MaterialModule } from './material.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { MaterialModule } from './material.module';
     BrowserAnimationsModule,
     HeroesModule,
     ComponentsModule,
-    MaterialModule
+    MaterialModule,
+    NgbModule
   ],
   providers: [ {provide: BUCKET, useValue:'gs://appcrudv2.appspot.com' }],
   bootstrap: [AppComponent]

@@ -3,13 +3,12 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { HeroeModel } from '../../models/heroe.model';
 
 import { MatPaginator } from '@angular/material/paginator';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { HeroesService } from '../../../components/heroes/services/heroes.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalComponent } from '../modal/modal.component';
-import { catchError } from 'rxjs/operators';
-import { EditHeroComponent } from '../../../components/heroes/edit-hero/edit-hero.component';
+
 
 @Component({
   selector: 'app-table',
@@ -22,18 +21,17 @@ export class TableComponent implements OnInit {
   
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
-  cargando=false;
+  loading=false;
   columnas: string[] = ['Numero','Nombre', 'Estado', 'Universo', 'Tools'];
     
   constructor( private heroService: HeroesService,
                       public dialog: MatDialog ) { }
 
   ngOnInit(): void {
-    this.cargando=true
-    this.heroService.getAllHeroes().subscribe(resp=>{
-      this.cargando=false;
+    this.loading=true;
+     this.heroService.getAllHeroes().subscribe(resp=>{
       this.dataSource.data = resp;
-      console.log(resp);
+      this.loading=false;
     });
   }
 
