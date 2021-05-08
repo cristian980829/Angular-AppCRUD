@@ -12,11 +12,13 @@ const FILTER_PAG_REGEX = /[^0-9]/g;
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  
-  page_number=1;
-  page_size=8;
+
   length_:number;
+  page = 1;
+  pageSize =8;
+  validate:boolean;
   heroes:HeroeModel[];
+
 
   constructor( private heroService: HeroesService,
                       private router:Router) { }
@@ -37,7 +39,6 @@ Swal.showLoading();
     this.heroes = resp;
     this.length_=this.heroes.length;
     Swal.close();
-      // console.log(resp);
     });
   }
 
@@ -46,7 +47,19 @@ Swal.showLoading();
   }
 
   selectPage(page: string) {
-    this.page_number = parseInt(page, 10) || 1;
+    this.page = parseInt(page, 10) || 1;
+  }
+
+  dataPerPage(page: number) {
+    this.validate=false;
+    if(page>this.heroes.length){
+      this.validate=true;
+      return;
+    }
+    if(!page){
+      return;
+    }
+    this.pageSize =page;
   }
 
   formatInput(input: HTMLInputElement) {

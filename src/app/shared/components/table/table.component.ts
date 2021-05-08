@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 
 import { HeroeModel } from '../../models/heroe.model';
 
@@ -15,9 +15,9 @@ import { ModalComponent } from '../modal/modal.component';
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css']
 })
-export class TableComponent implements OnInit {
+export class TableComponent implements OnInit, AfterViewInit {
 
-  dataSource= new MatTableDataSource<HeroeModel>([]);
+  dataSource = new MatTableDataSource();
   
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
@@ -29,16 +29,15 @@ export class TableComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading=true;
-     this.heroService.getAllHeroes().subscribe(resp=>{
-      this.dataSource.data = resp;
+     this.heroService.getAllHeroes().subscribe(heroes=>{
+      this.dataSource.data = heroes;
       this.loading=false;
     });
   }
 
-    ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
   }
-
 
  applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();

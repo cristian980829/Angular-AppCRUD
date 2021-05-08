@@ -1,8 +1,11 @@
 <div *ngIf="heroes" class="row">
+
   <div class="col-md-3 mb-5 animate__animated animate__fadeIn animate__faster mt-5"
-    *ngFor="let hero of heroes | paginate:page_size:page_number">
-    <img (click)="onHeroClick(hero)" [src]="hero.imagen" class="img-fluid hero_card pointer
-">
+    *ngFor="let hero of heroes | paginate:pageSize:page">
+    <img (click)="onHeroClick(hero)" [src]="hero.imagen" class="img-fluid hero_card pointer">
+
+    <!-- *ngFor="let hero of heroes | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+    <img (click)="onHeroClick(hero)" [src]="hero.imagen" class="img-fluid hero_card pointer"> -->
 
     <div>
       <div class="mt-3">
@@ -28,18 +31,35 @@
   </div>
 </div>
 
-<ngb-pagination *ngIf="length_" class="d-flex justify-content-center" [collectionSize]="length_" [(page)]="page_number"
-  [boundaryLinks]="true">
+<div class="row-md-3 mb-5" *ngIf="heroes">
+  <div class="col-0">
+    <input #i_ type="text" [value]="pageSize" inputmode="numeric" pattern="[0-9]*"
+      class="form-control custom-pages-input" id="paginationInput" (blur)="dataPerPage(i_.value)"
+      (input)="formatInput($any($event).target)" aria-labelledby="paginationInputLabel paginationDescription"
+      style="width: 3rem" />
+  </div>
+  <div class="col-0 mt-2">
+    <button class="btn btn-outline-secondary" (keyup.enter)="dataPerPage(i_.value)">Datos por página</button>
+    <small *ngIf="validate" class="form-text text-danger">Incorrecto: el valor ingresado supera el número de
+      datos</small>
+  </div>
+</div>
+
+<ngb-pagination *ngIf="length_" class="d-flex justify-content-center mt-5"
+  [collectionSize]="(heroes.length/pageSize)*10" [(page)]="page" [boundaryLinks]="true">
   <ng-template ngbPaginationPages let-page let-pages="pages">
     <li class="ngb-custom-pages-item" *ngIf="pages.length > 0">
       <div class="form-group d-flex flex-nowrap px-2">
-        <label id="paginationInputLabel" for="paginationInput" class="col-form-label mr-2 ml-1">Page</label>
+
+        <label id="paginationInputLabel" for="paginationInput" class="col-form-label mr-2 ml-1">Página</label>
         <input #i type="text" inputmode="numeric" pattern="[0-9]*" class="form-control custom-pages-input"
           id="paginationInput" [value]="page" (keyup.enter)="selectPage(i.value)" (blur)="selectPage(i.value)"
           (input)="formatInput($any($event).target)" aria-labelledby="paginationInputLabel paginationDescription"
-          style="width: 2.5rem" />
+          style="width: 3rem" />
         <span id="paginationDescription" class="col-form-label text-nowrap px-2">
-          of {{pages.length}}</span>
+          de {{pages.length}}</span>
+        <span id="paginationDescription" class="col-form-label text-nowrap px-2">
+          Total: {{length_}} datos</span>
       </div>
     </li>
   </ng-template>

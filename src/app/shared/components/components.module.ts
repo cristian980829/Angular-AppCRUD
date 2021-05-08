@@ -8,8 +8,8 @@ import { MaterialModule } from 'src/app/material.module';
 import { RatingModule } from 'ng-starrating';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { HeroesModule } from 'src/app/components/heroes/heroes.module';
 import { SaveHeroDialogCardComponent } from './save-hero-dialog-card/save-hero-dialog-card.component';
+import { BrowserModule } from '@angular/platform-browser';
 
 
 
@@ -29,7 +29,8 @@ import { SaveHeroDialogCardComponent } from './save-hero-dialog-card/save-hero-d
     MaterialModule,
     RatingModule,
     ReactiveFormsModule,
-    RouterModule
+    RouterModule,
+    // BrowserModule
     // HeroesModule
   ]
 })
