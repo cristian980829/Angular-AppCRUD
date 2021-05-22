@@ -8,6 +8,8 @@ import Swal from 'sweetalert2';
 import { HeroesService } from '../../../components/heroes/services/heroes.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalComponent } from '../modal/modal.component';
+import { AuthService } from '../../services/auth.service';
+
 
 
 @Component({
@@ -28,8 +30,12 @@ export class TableComponent implements OnInit, AfterViewInit {
                       public dialog: MatDialog ) { }
 
   ngOnInit(): void {
-    this.loading=true;
-     this.heroService.getAllHeroes().subscribe(heroes=>{
+         this.loading=true;
+    this.heroService.getAllHeroes().subscribe(heroes=>{
+      heroes.sort((a, b) => {
+        const n = a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase());
+        return n === 0 && a !== b ? b.nombre.localeCompare(a.nombre) : n;
+      });
       this.dataSource.data = heroes;
       this.loading=false;
     });
@@ -55,6 +61,13 @@ export class TableComponent implements OnInit, AfterViewInit {
       cancelButtonText: 'Cancelar'
     }).then(result => {
       if (result.value) {
+        Swal.fire({
+         icon: 'info',
+         text:'Eliminando...',
+         showConfirmButton: false,
+         allowOutsideClick: false
+        });
+        Swal.showLoading();
         this.heroService.deleteHeroById(heroe).then(() => {
           Swal.fire('!Eliminado!', 'El registro ha sido eliminado con exito.', 'success');
         }).catch((error) => {
@@ -73,7 +86,7 @@ export class TableComponent implements OnInit, AfterViewInit {
     this.openDialog();
   }
 
-  openDialog(hero?: HeroeModel): void {
+  private openDialog(hero?: HeroeModel): void {
     const config = {
       data: {
         message: hero ? 'Editar heroe' : 'Nuevo heroe',

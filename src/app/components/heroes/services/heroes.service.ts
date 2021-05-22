@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { map, delay, finalize, tap } from 'rxjs/operators';
+import { map} from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection, DocumentReference } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { HeroeModel } from 'src/app/shared/models/heroe.model';
 import { FileI } from 'src/app/shared/models/file.model';
@@ -13,10 +13,8 @@ import { FileI } from 'src/app/shared/models/file.model';
 })
 export class HeroesService {
 
-public loading=false;
 private heroesCollection: AngularFirestoreCollection<HeroeModel>;
 private filePath: any;
-private downloadURL: Observable<string>;
 
   constructor( private afs: AngularFirestore,
                       private storage: AngularFireStorage ) {
@@ -24,7 +22,7 @@ private downloadURL: Observable<string>;
     this.heroesCollection = afs.collection<HeroeModel>('heroes');    
   }
 
-    getAllHeroes(): Observable<HeroeModel[]> {
+    public getAllHeroes(): Observable<HeroeModel[]> {
     return this.heroesCollection
       .snapshotChanges()
       .pipe(
@@ -38,20 +36,24 @@ private downloadURL: Observable<string>;
       );
   }
 
-  getHero(id:string): Observable<HeroeModel>{
-    return this.afs.doc<HeroeModel>(`heroes/${id}`).valueChanges();
-  }
-
-  getOneHero(id:string): Observable<HeroeModel> {
+  public getHero(id:string): Observable<HeroeModel> {
     return this.afs.doc<HeroeModel>(`heroes/${id}`).valueChanges();
   }
   
-    saveHero( hero:HeroeModel,urlImage?:any ){
-      if(!urlImage){
-        return this.heroesCollection.doc(hero.id).update(hero);
-      }
-     
-     const heroetObj = {
+  public saveHero(hero:HeroeModel,urlImage?:any):Promise<DocumentReference<HeroeModel>>{
+    return this.heroesCollection.add(this.createHero(hero,urlImage));
+  }
+
+  public editHero( hero:HeroeModel,urlImage?:any ):Promise<any>{
+    if(!urlImage){
+      return this.heroesCollection.doc(hero.id).update(hero);
+    }
+
+    return this.heroesCollection.doc(hero.id).update(this.createHero(hero,urlImage));
+  }
+
+  private createHero(hero:HeroeModel,urlImage:any){
+    const heroeObj = {
       nombre: hero.nombre,
       poderes: hero.poderes,
       estado: hero.estado,
@@ -60,26 +62,21 @@ private downloadURL: Observable<string>;
       fileRef: this.filePath,
       valoracion: hero.valoracion
     };
-
-    if (hero.id) {
-      return this.heroesCollection.doc(hero.id).update(heroetObj);
-    } else {
-      return this.heroesCollection.add(heroetObj);
-    }
+    return heroeObj;
   }
   
-    uploadImageAndGetUrl(image: FileI) {
-      this.filePath = `images/${image.name}`;
-      const fileRef = this.storage.ref(this.filePath);
-      const task = this.storage.upload(this.filePath, image);
-      const DATA = {
-        fileRef,
-        task
-      }
-      return DATA;
+  public uploadImageAndGetUrl(image: FileI) {
+    this.filePath = `images/${image.name}`;
+    const fileRef = this.storage.ref(this.filePath);
+    const task = this.storage.upload(this.filePath, image);
+    const DATA = {
+      fileRef,
+      task
     }
+    return DATA;
+  }
   
-  deleteHeroById(heroe: HeroeModel) {
+  public deleteHeroById(heroe: HeroeModel):Promise<any> {
     return this.heroesCollection.doc(heroe.id).delete();
   }
 

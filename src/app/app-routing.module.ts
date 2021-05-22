@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ContainerAppComponent } from './components/pages/container-app/container-app.component';
 import { HeroComponent } from './components/heroes/hero/hero.component';
+import { AuthGuard } from './shared/auth.guard';
 
 const routes: Routes = [
    {
@@ -19,6 +20,21 @@ const routes: Routes = [
           import('./components/pages/about/about.module').then(
             m => m.AboutModule
           )
+      },
+      {
+        path: 'user/login',
+        loadChildren: () =>
+          import('./components/users/login/login.module').then(m => m.LoginModule)
+      },
+      {
+        path: 'user/register',
+        loadChildren: () =>
+          import('./components/users/register/register.module').then(m => m.RegisterModule)
+      },
+      {
+        path: 'user/profile',
+        loadChildren: () =>
+          import('./components/users/profile/profile.module').then(m => m.ProfileModule)
       },
       {
         path: 'heroList',

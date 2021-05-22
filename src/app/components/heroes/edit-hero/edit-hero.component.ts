@@ -18,17 +18,27 @@ export class EditHeroComponent implements OnInit {
   image:any;
   
   constructor( private heroService:HeroesService,
-    public dialogRef: MatDialogRef<EditHeroComponent>) { 
+    private dialogRef: MatDialogRef<EditHeroComponent>) { 
     }
     
     ngOnInit(): void {
     }
 
-  editHero(hero: HeroeModel) {
+  public editHero(hero: HeroeModel) {
         if (!this.image) {
           hero.imagen = this.hero.imagen;
-          this.heroService.saveHero(hero);          
-          this.endedProcess();
+          new Promise((resolve,reject)=>{
+            this.heroService.editHero(hero).then(()=>resolve(
+              this.endedProcess()),
+              err => reject(
+                Swal.fire({
+                 icon: 'error',
+                 title: `Error: ${err}`,
+                 showConfirmButton: true
+                })
+              )
+            );
+          });
         } 
         else {
           const DATA = this.heroService.uploadImageAndGetUrl(this.image);
@@ -36,8 +46,26 @@ export class EditHeroComponent implements OnInit {
           .pipe(
             finalize(() => {
               DATA.fileRef.getDownloadURL().subscribe(urlImage => {
-              this.heroService.saveHero(hero, urlImage);
-              this.endedProcess();
+              new Promise((resolve,reject)=>{
+                this.heroService.editHero(hero, urlImage).then(()=>resolve(
+                  this.endedProcess()),
+                  err => reject(
+                    //SI HUBO ERROR AL GUARDAR EL REGISTRO
+                    Swal.fire({
+                     icon: 'error',
+                     title: `Error: ${err}`,
+                     showConfirmButton: true
+                    })
+                  )
+                );
+              });
+              },err=>{
+                //SI HUBO ERROR AL SUBIR LA IMAGEN
+                Swal.fire({
+                     icon: 'error',
+                     title: `Error: ${err}`,
+                     showConfirmButton: true
+                    })
               });
             })
           ).subscribe();
@@ -46,7 +74,7 @@ export class EditHeroComponent implements OnInit {
   }
 
 
-  endedProcess(){
+  private endedProcess(){
     Swal.fire({
       icon: 'success',
       title: 'Actualizado con exito',

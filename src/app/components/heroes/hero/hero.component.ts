@@ -15,11 +15,11 @@ export class HeroComponent implements OnInit {
   
   constructor( private route: ActivatedRoute, 
     private heroService: HeroesService,
-    private _location:Location ) { }
+    private _location:Location) { }
   
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    this.heroService.getOneHero(id).subscribe(data=>{
+    this.heroService.getHero(id).subscribe(data=>{
       this.hero = data;
     })
   }

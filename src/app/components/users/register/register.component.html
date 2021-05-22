@@ -1,0 +1,60 @@
+<section id="login" class="mb-5 mt-5">
+  <div class="row">
+    <div class="col-xs-12 col-sm-6 col-md-5 mx-auto">
+      <div class="card_login">
+        <div class="card">
+          <div class="card-body text-center">
+
+            <form [formGroup]="registerForm" (ngSubmit)="onRegister(registerForm.value)">
+              <h1 class="h3 mb-3 font-weight-normal">Registrar</h1>
+              <div class="form-group">
+                <input formControlName="name" type="text" class="form-control" placeholder="Nombre"
+                  [class.is-invalid]="invalidName" required>
+                <small *ngIf="invalidName" class="form-text text-left text-danger">Debe tener al menos 5
+                  carácteres</small>
+              </div>
+              <div class="form-group">
+                <input formControlName="email" type="email" class="form-control" placeholder="Correo"
+                  [class.is-invalid]="invalidEmail" required>
+                <small *ngIf="invalidEmail" class="form-text text-left text-danger">Correo invalido</small>
+              </div>
+              <div class="form-group">
+                <input formControlName="password" type="password" class="form-control" placeholder="Contraseña"
+                  [class.is-invalid]="invalidPass1" required>
+                <small *ngIf="invalidPass1" class="form-text text-left text-danger">Debe tener al menos 5
+                  carácteres</small>
+              </div>
+              <div class="form-group">
+                <input formControlName="password2" type="password" class="form-control"
+                  placeholder="Repite la contraseña" [class.is-invalid]="invalidPass2" required>
+                <small *ngIf="invalidPass2" class="form-text text-left text-danger">Las contraseñas no coinciden</small>
+              </div>
+              <button type="submit" mat-raised-button color="primary" class="mb-3 btn-block"><i
+                  class="fas fa-user-plus"></i> Registrar</button>
+
+              <!-- <button type="submit" mat-raised-button color="primary" class="mb-3 btn-block" [disabled]="loading">
+                <i [ngClass]="{ 'fa fa-save': !loading, 'fas fa-sync-alt fa-spin': loading }"></i>
+                <span *ngIf="!loading"> Registrar</span>
+                <span *ngIf="loading"> Registrando</span>
+              </button> -->
+
+              <div class="form-group">
+                <a routerLink="/user/login">¿Ya tienes una cuenta?</a>
+              </div>
+              <!-- <div class="form-group">
+                  <button class="btn btn-block btn-social btn-facebook" (click)="onLoginFacebook()">
+                    <span class="fa fa-facebook"></span>
+                    FACEBOOK
+                  </button>
+                  <button class="btn btn-block btn-social btn-google" (click)="onLoginGoogle()">
+                    <span class="fa fa-google"></span>
+                    GOOGLE
+                  </button>
+                </div> -->
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

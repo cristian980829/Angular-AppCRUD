@@ -27,18 +27,23 @@ export class HomeComponent implements OnInit {
     this.loadData();
   }
 
-  loadData(){
+  private loadData(){
      Swal.fire({
       icon: 'info',
       text:'Cargando datos',
       showConfirmButton: false,
       allowOutsideClick: false
     });
-Swal.showLoading();
-    this.heroService.getAllHeroes().subscribe(resp=>{
-    this.heroes = resp;
-    this.length_=this.heroes.length;
-    Swal.close();
+    Swal.showLoading();
+    this.heroService.getAllHeroes().subscribe(heroes=>{
+      heroes.sort((a, b) => {
+        const n = a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase());
+        return n === 0 && a !== b ? b.nombre.localeCompare(a.nombre) : n;
+      });
+    
+      this.heroes = heroes;
+      this.length_=this.heroes.length;
+      Swal.close();
     });
   }
 
@@ -46,7 +51,10 @@ Swal.showLoading();
     this.router.navigate(['/hero',hero.id]);
   }
 
-  selectPage(page: string) {
+  selectPage(page: string,pages_num:number) {
+    if(parseInt(page)>pages_num){
+      return;
+    }
     this.page = parseInt(page, 10) || 1;
   }
 

@@ -31,15 +31,15 @@
   </div>
 </div>
 
-<div class="row-md-3 mb-5" *ngIf="heroes">
+<div class="row-md-3 mb-5" *ngIf="length_">
   <div class="col-0">
     <input #i_ type="text" [value]="pageSize" inputmode="numeric" pattern="[0-9]*"
       class="form-control custom-pages-input" id="paginationInput" (blur)="dataPerPage(i_.value)"
       (input)="formatInput($any($event).target)" aria-labelledby="paginationInputLabel paginationDescription"
-      style="width: 3rem" />
+      style="width: 3rem" (keyup.enter)="dataPerPage(i_.value)" />
   </div>
   <div class="col-0 mt-2">
-    <button class="btn btn-outline-secondary" (keyup.enter)="dataPerPage(i_.value)">Datos por página</button>
+    <button class="btn btn-outline-secondary" (click)="dataPerPage(i_.value)">Datos por página</button>
     <small *ngIf="validate" class="form-text text-danger">Incorrecto: el valor ingresado supera el número de
       datos</small>
   </div>
@@ -51,11 +51,11 @@
     <li class="ngb-custom-pages-item" *ngIf="pages.length > 0">
       <div class="form-group d-flex flex-nowrap px-2">
 
-        <label id="paginationInputLabel" for="paginationInput" class="col-form-label mr-2 ml-1">Página</label>
+        <label id="paginationInputLabel_" for="paginationInput_" class="col-form-label mr-2 ml-1">Página</label>
         <input #i type="text" inputmode="numeric" pattern="[0-9]*" class="form-control custom-pages-input"
-          id="paginationInput" [value]="page" (keyup.enter)="selectPage(i.value)" (blur)="selectPage(i.value)"
-          (input)="formatInput($any($event).target)" aria-labelledby="paginationInputLabel paginationDescription"
-          style="width: 3rem" />
+          id="paginationInput_" [value]="page" (keyup.enter)="selectPage(i.value,pages.length)"
+          (blur)="selectPage(i.value)" (input)="formatInput($any($event).target)"
+          aria-labelledby="paginationInputLabel_ paginationDescription" style="width: 3rem" />
         <span id="paginationDescription" class="col-form-label text-nowrap px-2">
           de {{pages.length}}</span>
         <span id="paginationDescription" class="col-form-label text-nowrap px-2">
