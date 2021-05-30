@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { UserInterface } from '../../../shared/models/user';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PATRON_EMAIL } from 'src/app/shared/utils/patrones';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -15,15 +16,13 @@ export class LoginComponent implements OnInit {
 
   loginForm:FormGroup;
   token='';  
+  loading=false;
 
   constructor( private auth: AuthService,
-                      private router:Router ) { }
+                      private router:Router,
+                      private _snackBar: MatSnackBar ) { }
 
   ngOnInit(): void {
-    this.token =  this.auth.currentToken;
-    if(this.token){
-       this.router.navigateByUrl('/home');
-    }
     this.createForm();
     this.rememberEmailOption();
   }
@@ -58,16 +57,9 @@ export class LoginComponent implements OnInit {
       this.validateData();
       return;
     }
-    Swal.fire({
-      allowOutsideClick:false,
-      icon: 'info',
-      title: 'Iniciando sesión...'
-    });
-    Swal.showLoading();
-
+    this.loading=true;
     this.auth.login(user).subscribe(resp =>{
-      Swal.close();
-        
+      this.openSnackBar();
       if(user.remember_me){
         localStorage.setItem('email', user.email);
       }else{
@@ -76,6 +68,7 @@ export class LoginComponent implements OnInit {
 
        this.router.navigateByUrl('/home');
      }, (err)=>{
+       this.loading=false;
        Swal.fire({
         icon: 'error',
         title: 'Error al autenticar',
@@ -83,6 +76,10 @@ export class LoginComponent implements OnInit {
         });
      });
     }
+
+    openSnackBar() {
+    this._snackBar.open('!Logueado con exito!', 'Cerrar');
+  }
 
   validateData(){
     if(this.loginForm.invalid){

@@ -1,27 +1,58 @@
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
-import { UserInterface } from '../models/user';
+import { Roles, UserInterface } from '../models/user';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
   private url = 'https://identitytoolkit.googleapis.com/v1/accounts:';
   private apiKey = 'AIzaSyBH4ulUcdDLrnjnxKOGKRgf-tFZhoO0LUY';
-  userToken:string;
+  image:any;
 
-  constructor( private afsAuth: AngularFireAuth, private afs: AngularFirestore,
-    private http: HttpClient ) { 
-      this.readToken();
-     }
+  constructor( private afs: AngularFirestore,
+                      private http: HttpClient ) { 
+  }
 
   getUser(uid:string): Observable<UserInterface> {
     return this.afs.doc<UserInterface>(`users/${uid}`).valueChanges();
   }
+  
+  registerUser( user:UserInterface ){
+    console.log(user);
+    
+    const AUTHDATA= {
+      ...user,
+      returnSecureToken:true
+    };
+    return this.http.post(`${this.url}signUp?key=${this.apiKey}`, AUTHDATA)
+    .pipe(map((userData:UserInterface)=>{
+      this.updateUserData(user, userData['localId'] );
+      this.saveToken(userData['idToken']);
+      localStorage.setItem('rol', Roles.OBSERVER);
+      localStorage.setItem('uid', userData['localId']);
+      //para que el map no bloquee la respuesta se retorna nuevamente
+      return userData;
+    }));
+  }
+
+  private updateUserData(user:UserInterface, id:string ) {
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${id}`);
+    const data: UserInterface = {
+      id: id,
+      email: user['email'],
+      name:user.name,
+      roles: Roles.OBSERVER,
+      imagen: user.imagen,
+      fileRef: user.fileRef,
+    }
+    return userRef.set(data, { merge: true })
+}
 
   login( usuario:UserInterface ){
     const AUTHDATA= {
@@ -31,11 +62,10 @@ export class AuthService {
     return this.http.post(`${this.url}signInWithPassword?key=${this.apiKey}`, AUTHDATA)
     .pipe(map(resp=>{
       this.saveToken(resp['idToken']);
-      localStorage.setItem('uid', resp['idToken']);
-      this.getUser(resp['localId']).subscribe(data=>{
-        for (const rol in data.roles) {
-           localStorage.setItem('rol', rol);
-        }
+      localStorage.setItem('uid', resp['localId']);
+      this.getUser(resp['localId']).subscribe((data:UserInterface)=>{
+        localStorage.setItem('rol', data.roles);
+        this.image=data.imagen;
       })
       //para que el map no bloquee la respuesta se retorna nuevamente
       return resp;
@@ -43,14 +73,21 @@ export class AuthService {
   }
 
   private saveToken( idToken:string ){
-    this.userToken=idToken;
     localStorage.setItem('token', idToken);
     let hoy = new Date();
     hoy.setSeconds(3600+hoy.getSeconds());
     localStorage.setItem('expira', hoy.getTime().toString());
   }
 
-  expired(){
+  hasRoles(roles): boolean {
+    return this.isAuthenticated() && roles.includes(localStorage.getItem('rol'));
+  }
+
+  isAuthenticated(): boolean {
+    return this.currentToken && this.expired();
+  }
+
+  expired():boolean{
       const EXPIRA = Number(localStorage.getItem('expira'));
       const EXPIRADATE = new Date();
       EXPIRADATE.setTime(EXPIRA);
@@ -62,82 +99,27 @@ export class AuthService {
       }
     }
 
-  clearItems(){
+    public get currentToken(): string {
+      return localStorage.getItem('token');
+    }
+    
+    public get currentRol(): string {
+      return localStorage.getItem('rol');
+    }
+
+    public get currentImage(): any {
+      return this.image
+    }
+
+    logoutUser() {
+      this.clearItems();
+    }
+
+  private clearItems(){
     localStorage.removeItem('token');
     localStorage.removeItem('expira');
     localStorage.removeItem('uid');
     localStorage.removeItem('rol');
   }
-
-  readToken(){
-    if(localStorage.getItem('token')){
-      this.userToken=localStorage.getItem('token');
-    }else{
-      this.userToken='';
-    }
-    return this.userToken;
-  }
-
-  registerUser( user:UserInterface ){
-    const AUTHDATA= {
-      ...user,
-      returnSecureToken:true
-    };
-    return this.http.post(`${this.url}signUp?key=${this.apiKey}`, AUTHDATA)
-    .pipe(map(userData=>{
-      this.updateUserData(userData, user.name);
-      this.saveToken(userData['idToken']);
-      //para que el map no bloquee la respuesta se retorna nuevamente
-      return userData;
-    }));
-  }
-
-  private updateUserData(user,name:string) {
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${ user['localId']}`);
-    const data: UserInterface = {
-      id: user['localId'],
-      email: user['email'],
-      name,
-      roles: {
-        observador: true
-      }
-    }
-    return userRef.set(data, { merge: true })
-  }
-
-    logoutUser() {
-      this.clearItems();
-      // localStorage.clear();
-      // return this.afsAuth.signOut();
-    }
-
-    public get currentToken(): string {
-    const token = localStorage.getItem('token');
-    return token;
-  }
-
-  //   loginEmailUser(user:UserInterface) {
-  //   return new Promise((resolve, reject) => {
-  //     this.afsAuth.signInWithEmailAndPassword(user.email, user.password)
-  //       .then(userData => resolve(userData),
-  //       err => reject(err));
-  //   });
-  // }
-
-  //  registerUser(user:UserInterface) {
-  //   return new Promise((resolve, reject) => {
-  //     this.afsAuth.createUserWithEmailAndPassword(user.email, user.password)
-  //       .then(userData => {
-  //         console.log(userData);
-  //         resolve(userData),
-  //           this.updateUserData(userData.user, user.name);
-  //       }).catch(err => console.log(reject(err)))
-  //   });
-  // }
-
-  
-
-
-
 
 }

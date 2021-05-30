@@ -18,6 +18,7 @@ export class HomeComponent implements OnInit {
   pageSize =8;
   validate:boolean;
   heroes:HeroeModel[];
+  rol:string;
 
 
   constructor( private heroService: HeroesService,

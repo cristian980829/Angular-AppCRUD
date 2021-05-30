@@ -1,8 +1,15 @@
-export interface Roles {
-  creador?: boolean;
-  admin?: boolean;
-  observador?:boolean;
+// export enum Roles {
+//   CREADOR: 'CREADOR';
+//   ADMIN?: 'ADMIN';
+//   OBSERVADOR?:'OBSERVADOR';
+// }
+
+export enum Roles {
+  ADMIN = 'ADMIN',
+  CREATOR = 'CREATOR',
+  OBSERVER = 'OBSERVER',
 }
+
 
 export interface UserInterface {
   id?: string;
@@ -12,4 +19,6 @@ export interface UserInterface {
   photoUrl?: string;
   roles: Roles;
   remember_me?:boolean;
+  imagen?: string;
+  fileRef?: string;
 }

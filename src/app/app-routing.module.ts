@@ -43,7 +43,7 @@ const routes: Routes = [
       },
       { path: 'hero/:id', component: HeroComponent },
       {
-        path: '',
+        path: '**',
         redirectTo: 'home',
         pathMatch: 'full'
       }

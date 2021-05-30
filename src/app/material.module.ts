@@ -13,6 +13,9 @@ import { MatListModule } from '@angular/material/list';
 import { MatDialogModule } from '@angular/material/dialog';
 import {MatRadioModule} from '@angular/material/radio';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 
 const myModule = [
@@ -28,6 +31,9 @@ const myModule = [
     MatListModule,
     MatDialogModule,
     MatRadioModule,
+    MatMenuModule,
+    MatProgressBarModule,
+    MatSnackBarModule
 ];
 
 @NgModule({

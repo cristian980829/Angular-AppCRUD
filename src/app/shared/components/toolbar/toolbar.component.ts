@@ -9,15 +9,11 @@ import { Router } from '@angular/router';
 })
 export class ToolbarComponent implements OnInit {
 
-  url:string;
-  token='';
-
   constructor( public authService: AuthService,
     private router:Router ) { 
   }
 
   ngOnInit(): void {
-    this.token =  this.authService.currentToken;
   }
 
   onLogout() {
