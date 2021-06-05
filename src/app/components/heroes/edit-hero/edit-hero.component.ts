@@ -5,6 +5,7 @@ import { finalize } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 
 import {  MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-edit-hero',
@@ -18,7 +19,8 @@ export class EditHeroComponent implements OnInit {
   image:any;
   
   constructor( private heroService:HeroesService,
-    private dialogRef: MatDialogRef<EditHeroComponent>) { 
+    private dialogRef: MatDialogRef<EditHeroComponent>,
+    private _snackBar: MatSnackBar) { 
     }
     
     ngOnInit(): void {
@@ -27,18 +29,15 @@ export class EditHeroComponent implements OnInit {
   public editHero(hero: HeroeModel) {
         if (!this.image) {
           hero.imagen = this.hero.imagen;
-          new Promise((resolve,reject)=>{
-            this.heroService.editHero(hero).then(()=>resolve(
-              this.endedProcess()),
-              err => reject(
-                Swal.fire({
-                 icon: 'error',
-                 title: `Error: ${err}`,
-                 showConfirmButton: true
-                })
-              )
-            );
-          });
+            this.heroService.editHero(hero)
+            .then(()=> this.endedProcess())
+            .catch(err=>{
+              Swal.fire({
+                icon: 'error',
+                title: `Error: ${err}`,
+                showConfirmButton: true
+              })
+            });
         } 
         else {
           const DATA = this.heroService.uploadImageAndGetUrl(this.image);
@@ -46,19 +45,15 @@ export class EditHeroComponent implements OnInit {
           .pipe(
             finalize(() => {
               DATA.fileRef.getDownloadURL().subscribe(urlImage => {
-              new Promise((resolve,reject)=>{
-                this.heroService.editHero(hero, urlImage).then(()=>resolve(
-                  this.endedProcess()),
-                  err => reject(
-                    //SI HUBO ERROR AL GUARDAR EL REGISTRO
-                    Swal.fire({
-                     icon: 'error',
-                     title: `Error: ${err}`,
-                     showConfirmButton: true
+                this.heroService.editHero(hero, urlImage)
+                  .then(()=> this.endedProcess())
+                   .catch(err=>{
+                     Swal.fire({
+                       icon: 'error',
+                       title: `Error: ${err}`,
+                       showConfirmButton: true
                     })
-                  )
-                );
-              });
+                   });
               },err=>{
                 //SI HUBO ERROR AL SUBIR LA IMAGEN
                 Swal.fire({
@@ -73,14 +68,11 @@ export class EditHeroComponent implements OnInit {
 
   }
 
-
   private endedProcess(){
-    Swal.fire({
-      icon: 'success',
-      title: 'Actualizado con exito',
-      showConfirmButton: true
-    });
     this.dialogRef.close();
+    this._snackBar.open('!Modificado con exito!', 'Cerrar', {
+      duration: 4 * 1000,
+    });
   }
 
 }

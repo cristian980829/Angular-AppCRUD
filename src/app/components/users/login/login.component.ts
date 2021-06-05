@@ -48,7 +48,6 @@ export class LoginComponent implements OnInit {
      email: new FormControl('', [Validators.required,Validators.pattern(PATRON_EMAIL)]),
      password: new FormControl('', [Validators.required, Validators.minLength(5)]),
      remember_me: new FormControl('')
-
    });
   }
 
@@ -78,7 +77,9 @@ export class LoginComponent implements OnInit {
     }
 
     openSnackBar() {
-    this._snackBar.open('!Logueado con exito!', 'Cerrar');
+    this._snackBar.open('!Logueado exitosamente!', 'Cerrar', {
+      duration: 4 * 1000,
+    });
   }
 
   validateData(){

@@ -3,6 +3,7 @@ import { HeroesService } from '../services/heroes.service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { finalize } from 'rxjs/operators';
 import Swal from 'sweetalert2';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-new-hero',
@@ -14,32 +15,28 @@ export class NewHeroComponent implements OnInit {
   image:any;
 
   constructor( public heroService: HeroesService,
-    private dialogRef: MatDialogRef<NewHeroComponent>) {
+    private dialogRef: MatDialogRef<NewHeroComponent>,
+    private _snackBar: MatSnackBar) {
   }
     
   ngOnInit(): void {
   }
 
-  public addNewHero(hero) {
+    addNewHero(hero) {
       const DATA = this.heroService.uploadImageAndGetUrl(this.image);
       DATA.task.snapshotChanges()
       .pipe(
         finalize(() => {
-          DATA.fileRef.getDownloadURL().subscribe(urlImage => {
-            console.log(urlImage);
-            // new Promise((resolve,reject)=>{
-            //     this.heroService.saveHero(hero, urlImage).then(()=>resolve(
-            //       this.endedProcess()),
-            //       err => reject(
-            //         //SI HUBO ERROR AL GUARDAR EL REGISTRO
-            //         Swal.fire({
-            //          icon: 'error',
-            //          title: `Error: ${err}`,
-            //          showConfirmButton: true
-            //         })
-            //       )
-            //     );
-            //   });
+          DATA.fileRef.getDownloadURL().subscribe( urlImage => {
+                 this.heroService.saveHero(hero, urlImage)
+                   .then(()=> this.endedProcess())
+                   .catch(err=>{
+                     Swal.fire({
+                       icon: 'error',
+                       title: `Error: ${err}`,
+                       showConfirmButton: true
+                    })
+                   });
           },err=>{
             //SI HUBO ERROR AL SUBIR LA IMAGEN
                 Swal.fire({
@@ -53,12 +50,10 @@ export class NewHeroComponent implements OnInit {
   }
 
   private endedProcess(){
-    Swal.fire({
-      icon: 'success',
-      title: 'Registrado con exito',
-      showConfirmButton: true
-    });
     this.dialogRef.close();
+    this._snackBar.open('!Registrado con exito!', 'Cerrar', {
+      duration: 4 * 1000,
+    });
   }
 
 }

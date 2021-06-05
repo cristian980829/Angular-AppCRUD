@@ -65,6 +65,7 @@ export class AuthService {
       localStorage.setItem('uid', resp['localId']);
       this.getUser(resp['localId']).subscribe((data:UserInterface)=>{
         localStorage.setItem('rol', data.roles);
+        // localStorage.setItem('TypeR', JSON.stringify(data.roles));
         this.image=data.imagen;
       })
       //para que el map no bloquee la respuesta se retorna nuevamente
