@@ -6,6 +6,7 @@ import { AngularFirestore, AngularFirestoreCollection, DocumentReference } from 
 import { AngularFireStorage } from '@angular/fire/storage';
 import { HeroeModel } from 'src/app/shared/models/heroe.model';
 import { FileI } from 'src/app/shared/models/file.model';
+import { AuthService } from '../../../shared/services/auth.service';
 
 
 @Injectable({
@@ -48,7 +49,6 @@ private filePath: any;
     if(!urlImage){
       return this.heroesCollection.doc(hero.id).update(hero);
     }
-
     return this.heroesCollection.doc(hero.id).update(this.createHero(hero,urlImage));
   }
 

@@ -16,10 +16,10 @@ export class AuthGuard implements CanActivate {
     if(!roles && this.auth.isAuthenticated()){
       return true;
     }
-    if (this.auth.hasRoles(roles)) {
+    if(this.auth.hasRoles(roles)) {
       return true;
     }
-    this.router.navigateByUrl('/home');
+    this.router.navigateByUrl('/user/login');
     return false;
   }
 

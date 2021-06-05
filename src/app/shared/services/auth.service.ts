@@ -4,7 +4,8 @@ import { Roles, UserInterface } from '../models/user';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
-
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,9 @@ export class AuthService {
   image:any;
 
   constructor( private afs: AngularFirestore,
-                      private http: HttpClient ) { 
+                      private http: HttpClient,
+                      private router:Router,
+                      private _snackBar: MatSnackBar ) { 
   }
 
   getUser(uid:string): Observable<UserInterface> {
@@ -76,7 +79,7 @@ export class AuthService {
   private saveToken( idToken:string ){
     localStorage.setItem('token', idToken);
     let hoy = new Date();
-    hoy.setSeconds(3600+hoy.getSeconds());
+    hoy.setSeconds(10+hoy.getSeconds());
     localStorage.setItem('expira', hoy.getTime().toString());
   }
 
@@ -95,7 +98,11 @@ export class AuthService {
       if( EXPIRADATE > new Date() ){
         return true;
       }else{
-        this.clearItems();
+        // this.clearItems();
+        this.logoutUser();
+        this._snackBar.open('!ATENCIÓN¡, !su cesión caducó!', 'Cerrar', {
+        duration: 4 * 1000,
+        });
         return false;
       }
     }
@@ -108,12 +115,9 @@ export class AuthService {
       return localStorage.getItem('rol');
     }
 
-    public get currentImage(): any {
-      return this.image
-    }
-
     logoutUser() {
       this.clearItems();
+      this.router.navigateByUrl('/user/login');
     }
 
   private clearItems(){

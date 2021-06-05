@@ -16,7 +16,7 @@
   </a>
 
   <button *ngIf="authService.currentToken" mat-button [matMenuTriggerFor]="menu">
-    <img [src]="authService.currentImage" class="img_profile">
+    <img src="assets/img/user_profile.png" class="img_profile">
   </button>
   <mat-menu #menu="matMenu">
     <button [routerLink]="'user/profile'" mat-menu-item><i class="far fa-address-card"></i> Perfil</button>

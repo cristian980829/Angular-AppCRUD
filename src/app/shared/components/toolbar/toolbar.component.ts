@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-toolbar',
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 export class ToolbarComponent implements OnInit {
 
   constructor( public authService: AuthService,
-    private router:Router ) { 
+                      private _snackBar: MatSnackBar ) { 
   }
 
   ngOnInit(): void {
@@ -18,7 +18,6 @@ export class ToolbarComponent implements OnInit {
 
   onLogout() {
     this.authService.logoutUser();
-    this.router.navigateByUrl('/user/login');
   }
 
 }

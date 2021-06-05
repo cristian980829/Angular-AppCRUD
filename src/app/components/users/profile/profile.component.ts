@@ -19,7 +19,6 @@ export class ProfileComponent implements OnInit {
     const id=localStorage.getItem('uid');
     this.authService.getUser(id).subscribe(user=>{
       this.user=user;
-      console.log(this.user);
     });
   }
 

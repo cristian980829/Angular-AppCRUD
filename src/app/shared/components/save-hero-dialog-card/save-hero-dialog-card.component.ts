@@ -2,6 +2,9 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ValidadoresService } from 'src/app/components/heroes/services/validadores.service';
 import { HeroeModel } from '../../models/heroe.model';
+import { AuthService } from '../../services/auth.service';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-save-hero-dialog-card',
@@ -19,7 +22,9 @@ export class SaveHeroDialogCardComponent implements OnInit {
   image:any;
 
   constructor( private fb:FormBuilder,
-                      private validadores: ValidadoresService) { 
+                      private validadores: ValidadoresService,
+                      private authService:AuthService,
+                      private dialogRef: MatDialogRef<SaveHeroDialogCardComponent>) { 
     this.hero = new EventEmitter();
     this.image_out = new EventEmitter();
   }
@@ -75,8 +80,11 @@ addPower(){
   }
 
   createOrAddHero(hero: HeroeModel) {
+    if(!this.authService.expired()){
+      this.dialogRef.close();
+      return;
+    }
     this.loading=true;
-    this.validateData();
     this.image_out.emit(this.image);
     this.hero.emit(hero);
   }

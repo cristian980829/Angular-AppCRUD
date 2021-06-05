@@ -27,7 +27,8 @@ export class TableComponent implements OnInit, AfterViewInit {
   columnas: string[] = ['Numero','Nombre', 'Estado', 'Universo', 'Tools'];
     
   constructor( private heroService: HeroesService,
-                      public dialog: MatDialog ) { }
+                      public dialog: MatDialog,
+                      private authService:AuthService ) { }
 
   ngOnInit(): void {
          this.loading=true;
@@ -50,6 +51,9 @@ export class TableComponent implements OnInit, AfterViewInit {
   }
 
   onDeleteHeroe(heroe: HeroeModel) {
+    if(!this.authService.expired()){
+      return;
+    }
     Swal.fire({
       title: '¿Seguro que desea eliminar este registro?',
       text: `!No podrá revertir los cambios!`,
