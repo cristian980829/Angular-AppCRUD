@@ -65,7 +65,7 @@ export class LoginComponent implements OnInit {
         localStorage.removeItem('email');
       }
 
-       this.router.navigateByUrl('/home');
+       this.router.navigateByUrl('home/home');
      }, (err)=>{
        this.loading=false;
        Swal.fire({

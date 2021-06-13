@@ -6,8 +6,6 @@ import { AngularFirestore, AngularFirestoreCollection, DocumentReference } from 
 import { AngularFireStorage } from '@angular/fire/storage';
 import { HeroeModel } from 'src/app/shared/models/heroe.model';
 import { FileI } from 'src/app/shared/models/file.model';
-import { AuthService } from '../../../shared/services/auth.service';
-
 
 @Injectable({
   providedIn: 'root'

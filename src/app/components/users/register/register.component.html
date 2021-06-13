@@ -37,6 +37,7 @@
                   (change)="getImage($event)">
                 <i class="fas fa-cloud-upload-alt"></i> Subir imagen
               </div>
+              <small *ngIf="image" class="form-text text-center">{{ image.name }}</small>
               <!-- <div class="progress mt-2" *ngIf="loading">
                 <div [style.visibility]="(!uploadPercent) ? 'hidden' : 'visible'"
                   class="progress-bar progress-bar-striped bg-success" role="progressbar"

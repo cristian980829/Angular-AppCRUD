@@ -2,39 +2,21 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ContainerAppComponent } from './components/pages/container-app/container-app.component';
 import { HeroComponent } from './components/heroes/hero/hero.component';
-import { AuthGuard } from './shared/auth.guard';
 
 const routes: Routes = [
    {
     path: '',
     component: ContainerAppComponent,
     children: [
-      {
+       {
         path: 'home',
         loadChildren: () =>
-          import('./components/pages/home/home.module').then(m => m.HomeModule)
+          import('./components/pages/pages.module').then(m => m.PagesModule)
       },
       {
-        path: 'about',
+        path: 'user',
         loadChildren: () =>
-          import('./components/pages/about/about.module').then(
-            m => m.AboutModule
-          )
-      },
-      {
-        path: 'user/login',
-        loadChildren: () =>
-          import('./components/users/login/login.module').then(m => m.LoginModule)
-      },
-      {
-        path: 'user/register',
-        loadChildren: () =>
-          import('./components/users/register/register.module').then(m => m.RegisterModule)
-      },
-      {
-        path: 'user/profile',
-        loadChildren: () =>
-          import('./components/users/profile/profile.module').then(m => m.ProfileModule)
+          import('./components/users/users.module').then(m => m.UsersModule)
       },
       {
         path: 'heroList',
@@ -44,7 +26,7 @@ const routes: Routes = [
       { path: 'hero/:id', component: HeroComponent },
       {
         path: '**',
-        redirectTo: 'home',
+        redirectTo: 'home/home',
         pathMatch: 'full'
       }
     ]

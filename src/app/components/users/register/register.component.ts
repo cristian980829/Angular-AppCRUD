@@ -36,7 +36,7 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
     this.token =  this.authService.currentToken;
     if(this.token){
-       this.router.navigateByUrl('/home');
+       this.router.navigateByUrl('home/home');
     }
     this.createForm();
   }

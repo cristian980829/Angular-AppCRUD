@@ -16,7 +16,6 @@ import { ComponentsModule } from 'src/app/shared/components/components.module';
     EditHeroComponent,
     NewHeroComponent,
     HeroComponent
-
   ],
   exports:[
     EditHeroComponent,

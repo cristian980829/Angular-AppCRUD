@@ -26,9 +26,7 @@ export class AuthService {
     return this.afs.doc<UserInterface>(`users/${uid}`).valueChanges();
   }
   
-  registerUser( user:UserInterface ){
-    console.log(user);
-    
+  registerUser( user:UserInterface ){    
     const AUTHDATA= {
       ...user,
       returnSecureToken:true
@@ -79,7 +77,7 @@ export class AuthService {
   private saveToken( idToken:string ){
     localStorage.setItem('token', idToken);
     let hoy = new Date();
-    hoy.setSeconds(10+hoy.getSeconds());
+    hoy.setSeconds(3600+hoy.getSeconds());
     localStorage.setItem('expira', hoy.getTime().toString());
   }
 
@@ -98,7 +96,6 @@ export class AuthService {
       if( EXPIRADATE > new Date() ){
         return true;
       }else{
-        // this.clearItems();
         this.logoutUser();
         this._snackBar.open('!ATENCIÓN¡, !su cesión caducó!', 'Cerrar', {
         duration: 4 * 1000,
