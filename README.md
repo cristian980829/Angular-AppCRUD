@@ -25,3 +25,7 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+Practice app with Angular 11
+
+login, authentication, rol, lazy loading, pipes, CRUD, Angular material, table, pagination, protected routes, firebase, good programming practices.
